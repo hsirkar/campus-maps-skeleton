@@ -1,0 +1,41 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+    push:
+        branches: ['main']
+    pull_request:
+        branches: ['main']
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🏗 Setup repo
+              uses: actions/checkout@v3
+
+            - name: 🏗 Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16.x
+                  cache: 'npm'
+
+            - name: 🆕 Update npm
+              run: npm install -g npm yarn
+
+            - name: 📦 Install dependencies
+              run: rm -rf node_modules && yarn install --frozen-lockfile
+
+            - name: ✨ Run prettier
+              run: npx prettier --check .
+
+            - name: 🧹 Run eslint
+              run: npx eslint .
+
+            - name: 🛠️ Build project
+              run: npm run build --if-present
+
+            - name: 🧪 Run test
+              run: npm test
