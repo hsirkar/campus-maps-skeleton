@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { initializeApp } from 'firebase/app';
+// import { getAuth } from 'firebase/auth';
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
-import { CssBaseline, Box } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 
 import theme from './theme.js';
 
-import AppBar from './components/AppBar';
-import SideBar from './components/SideBar';
-import Main from './components/Main';
+import Main from './components/Map';
+import Auth from './components/Auth';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyBNYzyZz9QTpTZpTWBYyA9YZVpKddYN5zs',
@@ -24,8 +24,10 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+// const auth = getAuth(app);
 
 function App() {
+    const [signedIn, setSignedIn] = React.useState(false);
     const [posts, setPosts] = React.useState([]);
     const [selectedPost, setSelectedPost] = React.useState(-1);
 
@@ -41,22 +43,19 @@ function App() {
         fetchPosts().then(res => console.log(res));
     }, []);
 
+    const props = {
+        signedIn,
+        setSignedIn,
+        posts,
+        setPosts,
+        selectedPost,
+        setSelectedPost,
+    };
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <AppBar />
-            <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 49px)' }}>
-                <SideBar
-                    posts={posts}
-                    selectedPost={selectedPost}
-                    setSelectedPost={setSelectedPost}
-                />
-                <Main
-                    posts={posts}
-                    selectedPost={selectedPost}
-                    setSelectedPost={setSelectedPost}
-                />
-            </Box>
+            {signedIn ? <Main {...props} /> : <Auth {...props} />}
         </ThemeProvider>
     );
 }

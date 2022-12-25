@@ -1,20 +1,21 @@
-import * as React from 'react';
-import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import React from 'react';
+import AppBar from './AppBar';
+import SideBar from './SideBar';
+import Map from './Map';
 
-export default function Main({ posts }) {
+export default function Main({ props }) {
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flex: 1,
-                bgcolor: 'grey.200',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-            <Typography color="text.secondary" fontSize="2em">
-                Map goes here
-            </Typography>
-        </Box>
+        <React.Fragment>
+            <AppBar />
+            <Box
+                sx={{
+                    display: 'flex',
+                    minHeight: 'calc(100vh - 49px)',
+                }}>
+                <SideBar {...props} />
+                <Map {...props} />
+            </Box>
+        </React.Fragment>
     );
 }
