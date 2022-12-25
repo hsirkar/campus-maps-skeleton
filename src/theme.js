@@ -1,6 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 
 // See https://chakra-ui.com/docs/styled-system/theme
+// https://github.com/sindresorhus/github-markdown-css/blob/main/github-markdown-light.css
 const theme = createTheme({
     palette: {
         primary: {
@@ -25,6 +26,39 @@ const theme = createTheme({
     typography: {
         fontSize: 13,
         fontFamily: 'Inter, sans-serif',
+        h1: {
+            fontSize: '2em',
+            fontWeight: 600,
+            marginTop: '24px',
+            marginBottom: '16px',
+            lineHeight: '1.25',
+        },
+        h2: {
+            fontSize: '1.5em',
+            fontWeight: 600,
+            marginTop: '24px',
+            marginBottom: '16px',
+            lineHeight: '1.25',
+        },
+        h3: {
+            fontSize: '1.25em',
+            fontWeight: 600,
+        },
+        h4: {
+            fontSize: '1em',
+            fontWeight: 600,
+        },
+        h5: {
+            fontSize: '.875em',
+            fontWeight: 600,
+        },
+        h6: {
+            fontSize: '.85em',
+            fontWeight: 600,
+        },
+        body1: {
+            fontSize: '0.95em',
+        },
     },
     shadows: [
         'none',
