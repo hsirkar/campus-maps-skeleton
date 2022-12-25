@@ -10,7 +10,6 @@ import { Avatar, Divider } from '@mui/material';
 
 // See https://mui.com/material-ui/react-app-bar/#MenuAppBar.js
 export default function MenuAppBar() {
-    const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleMenu = event => {
@@ -29,10 +28,9 @@ export default function MenuAppBar() {
             elevation={1}>
             <Toolbar variant="dense">
                 <Typography
-                    variant="h6"
+                    variant="h4"
                     component="div"
                     color="primary"
-                    fontWeight={600}
                     sx={{ flexGrow: 1 }}>
                     campus-maps
                 </Typography>
@@ -46,43 +44,41 @@ export default function MenuAppBar() {
                     University of Maryland, College Park
                 </Typography>
                 <Box flex={1} />
-                {auth && (
-                    <div>
-                        <IconButton
-                            size="medium"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="inherit">
-                            <Avatar sx={{ width: 32, height: 32 }}>RD</Avatar>
-                        </IconButton>
-                        <Menu
-                            PaperProps={{
-                                elevation: 1,
-                                sx: {
-                                    width: 240,
-                                },
-                            }}
-                            MenuListProps={{
-                                dense: true,
-                            }}
-                            id="menu-appbar"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}>
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleClose}>Settings</MenuItem>
-                            <MenuItem onClick={handleClose}>Favorites</MenuItem>
-                            <MenuItem onClick={handleClose}>
-                                Help & Support
-                            </MenuItem>
-                            <Divider />
-                            <MenuItem onClick={handleClose}>Sign out</MenuItem>
-                        </Menu>
-                    </div>
-                )}
+                <div>
+                    <IconButton
+                        size="medium"
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleMenu}
+                        color="inherit">
+                        <Avatar sx={{ width: 32, height: 32 }}>RD</Avatar>
+                    </IconButton>
+                    <Menu
+                        PaperProps={{
+                            elevation: 1,
+                            sx: {
+                                width: 240,
+                            },
+                        }}
+                        MenuListProps={{
+                            dense: true,
+                        }}
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}>
+                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                        <MenuItem onClick={handleClose}>Settings</MenuItem>
+                        <MenuItem onClick={handleClose}>Favorites</MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            Help & Support
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem onClick={handleClose}>Sign out</MenuItem>
+                    </Menu>
+                </div>
             </Toolbar>
         </AppBar>
     );
