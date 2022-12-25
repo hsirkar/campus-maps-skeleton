@@ -26,37 +26,36 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 function App() {
-    const [posts, setPosts] = React.useState([
-        {
-            lat: 100,
-            lng: 100,
-            name: 'New York City',
-        },
-        {
-            lat: 100,
-            lng: 100,
-            name: 'Columbia',
-        },
-    ]);
+    const [posts, setPosts] = React.useState([]);
+    const [selectedPost, setSelectedPost] = React.useState(-1);
 
-    // React.useEffect(() => {
-    //     const fetchPosts = async () => {
-    //         const col = collection(db, 'umd');
-    //         const snapshot = await getDocs(col);
-    //         const events = snapshot.docs.map(doc => doc.data());
-    //         return events;
-    //     }
+    async function fetchPosts() {
+        const col = collection(db, 'umd');
+        const snapshot = await getDocs(col);
+        const posts = snapshot.docs.map(doc => doc.data());
+        setPosts(posts);
+        console.log(posts);
+    }
 
-    //     fetchPosts().then(res => console.log(res));
-    // }, []);
+    React.useEffect(() => {
+        fetchPosts().then(res => console.log(res));
+    }, []);
 
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <AppBar />
             <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 49px)' }}>
-                <SideBar posts={posts} />
-                <Main posts={posts} />
+                <SideBar
+                    posts={posts}
+                    selectedPost={selectedPost}
+                    setSelectedPost={setSelectedPost}
+                />
+                <Main
+                    posts={posts}
+                    selectedPost={selectedPost}
+                    setSelectedPost={setSelectedPost}
+                />
             </Box>
         </ThemeProvider>
     );
