@@ -9,6 +9,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Stack } from '@mui/system';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Link as ReactRouterLink } from 'react-router-dom';
 
 function Copyright(props) {
     return (
@@ -22,10 +24,10 @@ function Copyright(props) {
             {' campus-maps'}
             <Stack direction="row" spacing={2} justifyContent="center">
                 <Link color="inherit" href="https://mui.com/">
-                    Privacy
+                    Help & Feedback
                 </Link>
                 <Link color="inherit" href="https://mui.com/">
-                    Cookies
+                    Privacy
                 </Link>
                 <Link color="inherit" href="https://mui.com/">
                     Terms
@@ -37,6 +39,10 @@ function Copyright(props) {
 
 // https://github.com/mui/material-ui/blob/v5.11.0/docs/data/material/getting-started/templates/sign-up/SignUp.js
 export function SignUp() {
+    const [school, setSchool] = React.useState('');
+    const handleChange = event => {
+        setSchool(event.target.value);
+    };
     const handleSubmit = event => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -112,9 +118,29 @@ export function SignUp() {
                             />
                         </Grid>
                         <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label">
+                                    Institution
+                                </InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={school}
+                                    label="Select institution"
+                                    onChange={handleChange}>
+                                    <MenuItem value="umd">
+                                        University of Maryland, College Park
+                                    </MenuItem>
+                                    {/* <MenuItem value="umbc">University of Maryland, Baltimore County</MenuItem>
+                                    <MenuItem value="jhu">Johns Hopkins University</MenuItem>
+                                    <MenuItem value="towson">Towson University</MenuItem> */}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
                             <Typography variant="body2" color="text.secondary">
-                                By signing up, you agree with our Privacy
-                                Policy, Cookie Policy, and Terms (see below).
+                                By signing up, you agree with our Privacy Policy
+                                and Terms of Service (see below).
                             </Typography>
                         </Grid>
                     </Grid>
@@ -123,11 +149,14 @@ export function SignUp() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 2, mb: 2 }}>
-                        Sign Up
+                        Continue
                     </Button>
                     <Grid container justifyContent="flex-end">
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link
+                                to="/login"
+                                component={ReactRouterLink}
+                                variant="body2">
                                 Already have an account? Sign in
                             </Link>
                         </Grid>
@@ -208,7 +237,10 @@ export function SignIn() {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link
+                                to="/register"
+                                component={ReactRouterLink}
+                                variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>

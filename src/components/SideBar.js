@@ -1,192 +1,214 @@
-import * as React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import {
-    Button,
-    Card,
-    CardContent,
-    CardHeader,
-    IconButton,
-    ListItemButton,
-    ListItemIcon,
-    Typography,
-} from '@mui/material';
-import { red } from '@mui/material/colors';
-import {
-    CalendarToday,
-    Close,
-    CommentOutlined,
-    FavoriteBorderOutlined,
-    InfoOutlined,
-    Person,
-    Place,
-    Share,
-} from '@mui/icons-material';
-import { Stack } from '@mui/system';
+// import * as React from 'react';
+// import List from '@mui/material/List';
+// import ListItem from '@mui/material/ListItem';
+// import Divider from '@mui/material/Divider';
+// import ListItemText from '@mui/material/ListItemText';
+// import ListItemAvatar from '@mui/material/ListItemAvatar';
+// import Avatar from '@mui/material/Avatar';
+// import {
+//     Button,
+//     // Card,
+//     CardContent,
+//     CardHeader,
+//     IconButton,
+//     ListItemButton,
+//     ListItemIcon,
+//     Typography,
+// } from '@mui/material';
+// import { red } from '@mui/material/colors';
+// import {
+//     CalendarToday,
+//     Close,
+//     CommentOutlined,
+//     FavoriteBorderOutlined,
+//     InfoOutlined,
+//     Person,
+//     Place,
+//     Share,
+// } from '@mui/icons-material';
+// import { Stack } from '@mui/system';
+// // import { collection, getDocs } from 'firebase/firestore/lite';
+// // import { db } from '../firebase';
 
-// See https://mui.com/material-ui/react-list/#AlignItemsList.js
-function PostList({ posts, selectedPost, setSelectedPost }) {
-    return (
-        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-            {posts.map((p, i) => (
-                <React.Fragment key={i}>
-                    <ListItem alignItems="flex-start" sx={{ p: 0 }}>
-                        <ListItemButton
-                            sx={{ px: 3, py: 1 }}
-                            onClick={() => setSelectedPost(i)}>
-                            <ListItemAvatar>
-                                <Avatar
-                                    alt={p.user}
-                                    src="/static/images/avatar/1.jpg"
-                                />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={p.title}
-                                secondary={p.desc}
-                            />
-                        </ListItemButton>
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
-                </React.Fragment>
-            ))}
-        </List>
-    );
-}
+// // See https://mui.com/material-ui/react-list/#AlignItemsList.js
+// export function PostList() {
+//     const [posts] = React.useState([]);
 
-// See https://mui.com/material-ui/react-card/#RecipeReviewCard.js
-function PostDetails({ posts, selectedPost, setSelectedPost }) {
-    const post = posts[selectedPost];
-    const [building, setBuilding] = React.useState(
-        'Getting nearest location...'
-    );
+//     // async function fetchPosts() {
+//     //     const res = await getDocs(collection(db, 'umd'));
+//     //     const posts = res.docs.map(doc => doc.data());
+//     //     setPosts(posts);
+//     //     console.log(posts);
+//     // }
+//     // React.useEffect(() => {
+//     //     fetchPosts();
+//     // }, []);
 
-    // Reverse geocode - https://nominatim.org/release-docs/latest/api/Overview/
-    React.useEffect(() => {
-        fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${post.loc._lat}&lon=${post.loc._long}&format=json`
-        )
-            .then(res => res.json())
-            .then(res => setBuilding(res.display_name.split(',')[0]));
-    }, [post]);
+//     const setSelectedPost = _ => null;
 
-    return (
-        <React.Fragment>
-            <CardHeader
-                avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        R
-                    </Avatar>
-                }
-                action={
-                    <IconButton
-                        aria-label="settings"
-                        onClick={() => setSelectedPost(null)}>
-                        <Close />
-                    </IconButton>
-                }
-                title={post.title}
-                subheader={post.user}
-                titleTypographyProps={{
-                    variant: 'h3',
-                    sx: { mb: 0.5 },
-                }}
-            />
+//     return (
+//         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+//             {posts.map((p, i) => (
+//                 <React.Fragment key={i}>
+//                     <ListItem alignItems="flex-start" sx={{ p: 0 }}>
+//                         <ListItemButton
+//                             sx={{ px: 3, py: 1 }}
+//                             onClick={() => setSelectedPost(i)}>
+//                             <ListItemAvatar>
+//                                 <Avatar
+//                                     alt={p.user}
+//                                     src="/static/images/avatar/1.jpg"
+//                                 />
+//                             </ListItemAvatar>
+//                             <ListItemText
+//                                 primary={p.title}
+//                                 secondary={p.desc}
+//                             />
+//                         </ListItemButton>
+//                     </ListItem>
+//                     <Divider variant="inset" component="li" />
+//                 </React.Fragment>
+//             ))}
+//         </List>
+//     );
+// }
 
-            <CardContent sx={{ pt: 0 }}>
-                <Divider />
-                <Stack direction="row" spacing="1" mb={1} mt={1}>
-                    <Button
-                        sx={{ width: 90, color: 'text.secondary' }}
-                        variant="text"
-                        startIcon={<FavoriteBorderOutlined />}>
-                        100
-                    </Button>
-                    <Button
-                        sx={{ width: 90, color: 'text.secondary' }}
-                        variant="text"
-                        startIcon={<CommentOutlined />}>
-                        55
-                    </Button>
-                    <Button
-                        sx={{ width: 90, color: 'text.secondary' }}
-                        variant="text"
-                        startIcon={<Share />}>
-                        Share
-                    </Button>
-                </Stack>
+// // See https://mui.com/material-ui/react-card/#RecipeReviewCard.js
+// export function PostDetails() {
+//     // const post = +
 
-                <Divider />
+//     // const post = posts[selectedPost];
 
-                <List mt={1.5}>
-                    <ListItem sx={{ px: 1.25, py: 0.25 }}>
-                        <ListItemIcon sx={{ minWidth: 0, pr: 2 }}>
-                            <InfoOutlined color="primary" fontSize="medium" />
-                        </ListItemIcon>
-                        <ListItemText primary={post.desc} />
-                    </ListItem>
+//     const post = {};
+//     const setSelectedPost = _ => null;
 
-                    <ListItem sx={{ px: 1.25, py: 0.25 }}>
-                        <ListItemIcon sx={{ minWidth: 0, pr: 2 }}>
-                            <Place color="primary" fontSize="medium" />
-                        </ListItemIcon>
-                        <ListItemText primary={building} />
-                    </ListItem>
+//     const [building, setBuilding] = React.useState(
+//         'Getting nearest location...'
+//     );
 
-                    <ListItem sx={{ px: 1.25, py: 0.25 }}>
-                        <ListItemIcon sx={{ minWidth: 0, pr: 2 }}>
-                            <CalendarToday color="primary" fontSize="medium" />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary={new Date(
-                                post.eventTime.seconds * 1000
-                            ).toLocaleString('en-US', { timeZone: 'utc' })}
-                        />
-                    </ListItem>
-                </List>
+//     // Reverse geocode - https://nominatim.org/release-docs/latest/api/Overview/
+//     React.useEffect(() => {
+//         fetch(
+//             `https://nominatim.openstreetmap.org/reverse?lat=${post.loc._lat}&lon=${post.loc._long}&format=json`
+//         )
+//             .then(res => res.json())
+//             .then(res => setBuilding(res.display_name.split(',')[0]));
+//     }, [post]);
 
-                <Divider />
+//     return (
+//         <React.Fragment>
+//             <CardHeader
+//                 avatar={
+//                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+//                         R
+//                     </Avatar>
+//                 }
+//                 action={
+//                     <IconButton
+//                         aria-label="settings"
+//                         onClick={() => setSelectedPost(null)}>
+//                         <Close />
+//                     </IconButton>
+//                 }
+//                 title={post.title}
+//                 subheader={post.user}
+//                 titleTypographyProps={{
+//                     variant: 'h3',
+//                     sx: { mb: 0.5 },
+//                 }}
+//             />
 
-                <Typography variant="h3" mt={3}>
-                    Comments
-                </Typography>
+//             <CardContent sx={{ pt: 0 }}>
+//                 <Divider />
+//                 <Stack direction="row" spacing="1" mb={1} mt={1}>
+//                     <Button
+//                         sx={{ width: 90, color: 'text.secondary' }}
+//                         variant="text"
+//                         startIcon={<FavoriteBorderOutlined />}>
+//                         100
+//                     </Button>
+//                     <Button
+//                         sx={{ width: 90, color: 'text.secondary' }}
+//                         variant="text"
+//                         startIcon={<CommentOutlined />}>
+//                         55
+//                     </Button>
+//                     <Button
+//                         sx={{ width: 90, color: 'text.secondary' }}
+//                         variant="text"
+//                         startIcon={<Share />}>
+//                         Share
+//                     </Button>
+//                 </Stack>
 
-                <List>
-                    {post.comments.map(comment => (
-                        <ListItem key={comment} alignItems="flex-start">
-                            <ListItemAvatar>
-                                <Avatar>
-                                    <Person />
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={comment}
-                                secondary="Anonymous User"
-                            />
-                        </ListItem>
-                    ))}
-                </List>
-            </CardContent>
-        </React.Fragment>
-    );
-}
+//                 <Divider />
 
-export default function SideBar(props) {
-    return (
-        <Card
-            elevation={1}
-            sx={{
-                width: props.selectedPost === null ? '400px' : '600px',
-                position: 'relative',
-            }}>
-            {props.selectedPost === null ? (
-                <PostList {...props} />
-            ) : (
-                <PostDetails {...props} />
-            )}
-        </Card>
-    );
-}
+//                 <List mt={1.5}>
+//                     <ListItem sx={{ px: 1.25, py: 0.25 }}>
+//                         <ListItemIcon sx={{ minWidth: 0, pr: 2 }}>
+//                             <InfoOutlined color="primary" fontSize="medium" />
+//                         </ListItemIcon>
+//                         <ListItemText primary={post.desc} />
+//                     </ListItem>
+
+//                     <ListItem sx={{ px: 1.25, py: 0.25 }}>
+//                         <ListItemIcon sx={{ minWidth: 0, pr: 2 }}>
+//                             <Place color="primary" fontSize="medium" />
+//                         </ListItemIcon>
+//                         <ListItemText primary={building} />
+//                     </ListItem>
+
+//                     <ListItem sx={{ px: 1.25, py: 0.25 }}>
+//                         <ListItemIcon sx={{ minWidth: 0, pr: 2 }}>
+//                             <CalendarToday color="primary" fontSize="medium" />
+//                         </ListItemIcon>
+//                         <ListItemText
+//                             primary={new Date(
+//                                 post.eventTime.seconds * 1000
+//                             ).toLocaleString('en-US', { timeZone: 'utc' })}
+//                         />
+//                     </ListItem>
+//                 </List>
+
+//                 <Divider />
+
+//                 <Typography variant="h3" mt={3}>
+//                     Comments
+//                 </Typography>
+
+//                 <List>
+//                     {post.comments.map(comment => (
+//                         <ListItem key={comment} alignItems="flex-start">
+//                             <ListItemAvatar>
+//                                 <Avatar>
+//                                     <Person />
+//                                 </Avatar>
+//                             </ListItemAvatar>
+//                             <ListItemText
+//                                 primary={comment}
+//                                 secondary="Anonymous User"
+//                             />
+//                         </ListItem>
+//                     ))}
+//                 </List>
+//             </CardContent>
+//         </React.Fragment>
+//     );
+// }
+
+// // export default function SideBar(props) {
+// //     return (
+// //         <Card
+// //             elevation={1}
+// //             sx={{
+// //                 width: props.selectedPost === null ? '400px' : '600px',
+// //                 position: 'relative',
+// //             }}>
+// //             {/* {props.selectedPost === null ? (
+// //                 <PostList {...props} />
+// //             ) : (
+// //                 <PostDetails {...props} />
+// //             )} */}
+// //         </Card>
+// //     );
+// // }
