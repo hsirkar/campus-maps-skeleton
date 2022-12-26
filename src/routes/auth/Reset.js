@@ -1,17 +1,9 @@
-import {
-    Button,
-    Checkbox,
-    FormControlLabel,
-    Grid,
-    TextField,
-    Typography,
-    Link,
-} from '@mui/material';
+import { Button, Grid, TextField, Typography, Link } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 
-export default function Login() {
+export default function Reset() {
     const handleSubmit = event => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -23,7 +15,13 @@ export default function Login() {
 
     return (
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 4 }}>
-            <Typography variant="h4">Sign in</Typography>
+            <Typography variant="h4" mb={1}>
+                Forgot password
+            </Typography>
+            <Typography variant="body2">
+                Enter your email below. If the email is valid, we'll send you a
+                link to reset your password.
+            </Typography>
             <TextField
                 margin="normal"
                 required
@@ -34,42 +32,20 @@ export default function Login() {
                 autoComplete="email"
                 autoFocus
             />
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-            />
-            <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-            />
             <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}>
-                Sign In
+                Send Reset Link
             </Button>
             <Grid container>
                 <Grid item xs>
                     <Link
-                        to="/password-reset"
                         component={ReactRouterLink}
+                        to="/login"
                         variant="body2">
-                        Forgot password?
-                    </Link>
-                </Grid>
-                <Grid item>
-                    <Link
-                        to="/register"
-                        component={ReactRouterLink}
-                        variant="body2">
-                        Don't have an account? Sign Up
+                        Back to login
                     </Link>
                 </Grid>
             </Grid>

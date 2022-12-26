@@ -7,7 +7,7 @@ import theme from './theme';
 
 import Auth from './routes/auth/Auth';
 import Verify from './routes/auth/Verify';
-import Forgot from './routes/auth/Forgot';
+import Reset from './routes/auth/Reset';
 import Login from './routes/auth/Login';
 import Register from './routes/auth/Register';
 
@@ -48,8 +48,8 @@ const router = createBrowserRouter([
                 element: <Register />,
             },
             {
-                path: 'forgot',
-                element: <Forgot />,
+                path: 'password-reset',
+                element: <Reset />,
             },
             {
                 path: 'verify',
