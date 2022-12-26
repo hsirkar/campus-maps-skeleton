@@ -6,6 +6,7 @@ import { Link as ReactRouterLink } from 'react-router-dom';
 export default function Copyright(props) {
     return (
         <Typography
+            component="div"
             variant="body2"
             color="text.secondary"
             align="center"
