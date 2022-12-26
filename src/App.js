@@ -10,6 +10,7 @@ import Verify from './routes/auth/Verify';
 import Reset from './routes/auth/Reset';
 import Login from './routes/auth/Login';
 import Register from './routes/auth/Register';
+import Logout from './routes/auth/Logout';
 
 import Page from './routes/pages/Page';
 import Help from './routes/pages/Help';
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
             {
                 path: 'verify',
                 element: <Verify />,
+            },
+            {
+                path: 'logout',
+                element: <Logout />,
             },
         ],
     },

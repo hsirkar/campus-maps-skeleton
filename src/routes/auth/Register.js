@@ -1,6 +1,8 @@
 import {
     Button,
+    Checkbox,
     FormControl,
+    FormControlLabel,
     Grid,
     InputLabel,
     Link,
@@ -14,94 +16,108 @@ import React from 'react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 
 export default function Register() {
-    const [school, setSchool] = React.useState('');
+    const [isStudent, setIsStudent] = React.useState(false);
+    const [school, setSchool] = React.useState(null);
     const handleChange = event => {
+        event.preventDefault();
         setSchool(event.target.value);
+    };
+    const handleCheckboxChange = event => {
+        event.preventDefault();
+        setIsStudent(event.target.checked);
     };
     const handleSubmit = event => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
+            name: data.get('firstName') + ' ' + data.get('lastName'),
             email: data.get('email'),
             password: data.get('password'),
+            institution: school,
         });
     };
 
     return (
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 4 }}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Typography variant="h4">Sign up</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        autoComplete="given-name"
-                        name="firstName"
-                        required
-                        fullWidth
-                        id="firstName"
-                        label="First Name"
-                        autoFocus
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        fullWidth
-                        id="lastName"
-                        label="Last Name"
-                        name="lastName"
-                        autoComplete="family-name"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="new-password"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">
-                            Institution
-                        </InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={school}
-                            label="Select institution"
-                            onChange={handleChange}>
-                            <MenuItem value="umd">
-                                University of Maryland, College Park
-                            </MenuItem>
-                            {/* <MenuItem value="umbc">University of Maryland, Baltimore County</MenuItem>
-                                    <MenuItem value="jhu">Johns Hopkins University</MenuItem>
-                                    <MenuItem value="towson">Towson University</MenuItem> */}
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography variant="body2" color="text.secondary">
-                        By signing up, you agree with our Privacy Policy and
-                        Terms of Service (see below).
-                    </Typography>
-                </Grid>
-            </Grid>
+            <Typography variant="h4" mb={0.5}>
+                Sign up
+            </Typography>
+            <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+            />
+            <FormControl margin="normal" fullWidth required>
+                <InputLabel id="campus-label">Campus</InputLabel>
+                <Select
+                    labelId="institution"
+                    id="institution"
+                    value={school}
+                    label="Select institution"
+                    onChange={handleChange}
+                    MenuProps={{ elevation: 1 }}>
+                    <MenuItem value="umd">
+                        University of Maryland, College Park
+                    </MenuItem>
+                    <MenuItem value="others" disabled>
+                        Others coming soon!
+                    </MenuItem>
+                </Select>
+            </FormControl>
+            {school && (
+                <FormControlLabel
+                    sx={{ mt: 1 }}
+                    control={
+                        <Checkbox
+                            required
+                            value={isStudent}
+                            onChange={handleCheckboxChange}
+                            color="primary"
+                        />
+                    }
+                    label="I am a student enrolled at this institution"
+                />
+            )}
+            {isStudent && (
+                <Typography variant="body2" color="text.secondary" mb={1}>
+                    We'll use your school email only to verify your student
+                    status. It will not be shared or visible to anyone.
+                </Typography>
+            )}
+            <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label={isStudent ? 'School email' : 'Email'}
+                name="email"
+                autoComplete="email"
+            />
+            <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+            />
+            <Typography variant="body2" color="text.secondary" mt={1} mb={1}>
+                By signing up, you agree with our{' '}
+                <Link target="_blank" href="/policies/privacy" color="inherit">
+                    Privacy Policy
+                </Link>{' '}
+                and{' '}
+                <Link target="_blank" href="/policies/terms" color="inherit">
+                    Terms of Service
+                </Link>
+                .
+            </Typography>
             <Button
                 type="submit"
                 fullWidth

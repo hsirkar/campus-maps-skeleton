@@ -1,7 +1,6 @@
 import { Typography, Link } from '@mui/material';
 import { Stack } from '@mui/system';
 import React from 'react';
-import { Link as ReactRouterLink } from 'react-router-dom';
 
 export default function Copyright(props) {
     return (
@@ -17,19 +16,13 @@ export default function Copyright(props) {
             {new Date().getFullYear()}
             {' campus-maps'}
             <Stack direction="row" spacing={2} justifyContent="center">
-                <Link color="inherit" component={ReactRouterLink} to="help">
+                <Link target="_blank" color="inherit" href="/help">
                     Help & Feedback
                 </Link>
-                <Link
-                    color="inherit"
-                    component={ReactRouterLink}
-                    to="/policies/privacy">
+                <Link target="_blank" color="inherit" href="/policies/privacy">
                     Privacy
                 </Link>
-                <Link
-                    color="inherit"
-                    component={ReactRouterLink}
-                    to="/policies/terms">
+                <Link target="_blank" color="inherit" href="/policies/terms">
                     Terms
                 </Link>
             </Stack>
