@@ -84,7 +84,7 @@ function PostDetails({ posts, selectedPost, setSelectedPost }) {
                 action={
                     <IconButton
                         aria-label="settings"
-                        onClick={() => setSelectedPost(-1)}>
+                        onClick={() => setSelectedPost(null)}>
                         <Close />
                     </IconButton>
                 }
@@ -179,10 +179,10 @@ export default function SideBar(props) {
         <Card
             elevation={1}
             sx={{
-                width: props.selectedPost === -1 ? '400px' : '600px',
+                width: props.selectedPost === null ? '400px' : '600px',
                 position: 'relative',
             }}>
-            {props.selectedPost === -1 ? (
+            {props.selectedPost === null ? (
                 <PostList {...props} />
             ) : (
                 <PostDetails {...props} />

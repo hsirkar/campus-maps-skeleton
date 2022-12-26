@@ -36,7 +36,7 @@ function Copyright(props) {
 }
 
 // https://github.com/mui/material-ui/blob/v5.11.0/docs/data/material/getting-started/templates/sign-up/SignUp.js
-function SignUp({ setRegistering }) {
+export function SignUp() {
     const handleSubmit = event => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -127,10 +127,7 @@ function SignUp({ setRegistering }) {
                     </Button>
                     <Grid container justifyContent="flex-end">
                         <Grid item>
-                            <Link
-                                onClick={() => setRegistering(false)}
-                                href="#"
-                                variant="body2">
+                            <Link href="#" variant="body2">
                                 Already have an account? Sign in
                             </Link>
                         </Grid>
@@ -143,7 +140,7 @@ function SignUp({ setRegistering }) {
 }
 
 // https://github.com/mui/material-ui/blob/v5.11.0/docs/data/material/getting-started/templates/sign-in/SignIn.js
-function SignIn({ setRegistering }) {
+export function SignIn() {
     const handleSubmit = event => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -211,10 +208,7 @@ function SignIn({ setRegistering }) {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link
-                                onClick={() => setRegistering(true)}
-                                href="#"
-                                variant="body2">
+                            <Link href="#" variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
@@ -224,12 +218,4 @@ function SignIn({ setRegistering }) {
             <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
     );
-}
-
-export default function Auth(props) {
-    const [registering, setRegistering] = React.useState(true);
-
-    if (registering)
-        return <SignUp setRegistering={setRegistering} {...props} />;
-    else return <SignIn setRegistering={setRegistering} {...props} />;
 }
