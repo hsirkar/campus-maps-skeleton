@@ -4,8 +4,6 @@ import {
     AccordionDetails,
     AccordionSummary,
     Button,
-    Checkbox,
-    FormControlLabel,
     TextField,
     Typography,
 } from '@mui/material';
@@ -144,7 +142,6 @@ export default function Help() {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
-                    autoFocus
                 />
                 <TextField
                     margin="normal"

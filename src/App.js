@@ -16,15 +16,19 @@ import Help from './routes/pages/Help';
 import Privacy from './routes/pages/policies/Privacy';
 import Terms from './routes/pages/policies/Terms';
 
-import Root from './routes/root/Root';
+import Root, { loader as rootLoader } from './routes/root/Root';
 import PostList from './routes/root/PostList';
-import PostDetail from './routes/root/PostDetail';
+import PostDetail, {
+    loader as postDetailLoader,
+} from './routes/root/PostDetail';
 
 // See https://reactrouter.com/en/main/start/overview
 const router = createBrowserRouter([
     {
         path: '/',
         element: <Root />,
+        id: 'root',
+        loader: rootLoader,
         children: [
             {
                 path: '/',
@@ -33,6 +37,7 @@ const router = createBrowserRouter([
             {
                 path: '/posts/:id',
                 element: <PostDetail />,
+                loader: postDetailLoader,
             },
         ],
     },
