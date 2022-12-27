@@ -46,7 +46,7 @@ export default function PostDetail() {
     const { post, building } = useLoaderData();
 
     return (
-        <Box sx={{ width: 600 }}>
+        <Box sx={{ width: 500 }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -96,21 +96,21 @@ export default function PostDetail() {
 
                 <List mt={1.5}>
                     <ListItem sx={{ px: 1.25, py: 0.25 }}>
-                        <ListItemIcon sx={{ minWidth: 0, pr: 2 }}>
+                        <ListItemIcon sx={{ minWidth: 0, pr: 1.5 }}>
                             <InfoOutlined color="primary" fontSize="medium" />
                         </ListItemIcon>
                         <ListItemText primary={post.desc} />
                     </ListItem>
 
                     <ListItem sx={{ px: 1.25, py: 0.25 }}>
-                        <ListItemIcon sx={{ minWidth: 0, pr: 2 }}>
+                        <ListItemIcon sx={{ minWidth: 0, pr: 1.5 }}>
                             <Place color="primary" fontSize="medium" />
                         </ListItemIcon>
                         <ListItemText primary={building} />
                     </ListItem>
 
-                    <ListItem sx={{ px: 1.25, py: 0.25 }}>
-                        <ListItemIcon sx={{ minWidth: 0, pr: 2 }}>
+                    <ListItem sx={{ px: 1.25, py: 0.2 }}>
+                        <ListItemIcon sx={{ minWidth: 0, pr: 1.5 }}>
                             <CalendarToday color="primary" fontSize="medium" />
                         </ListItemIcon>
                         <ListItemText
