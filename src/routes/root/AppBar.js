@@ -23,8 +23,12 @@ export default function MenuAppBar() {
     return (
         <AppBar
             position="relative"
-            color="transparent"
-            sx={{ px: 1, borderBottom: '1px solid rgba(0,0,0,0.1)' }}
+            sx={{
+                px: 1,
+                borderBottom: '1px solid rgba(0,0,0,0.1)',
+                zIndex: theme => theme.zIndex.drawer + 1,
+                bgcolor: 'background.paper',
+            }}
             elevation={1}>
             <Toolbar variant="dense">
                 <Typography
