@@ -52,10 +52,9 @@ export default function PostList() {
     // Save context
     const [context, setContext] = React.useState();
     const { pathname } = useLocation();
-    
+
     React.useEffect(() => {
-        if(!pathname.includes("/p/"))
-            setContext(pathname);
+        if (!pathname.includes('/p/')) setContext(pathname);
     }, [pathname]);
 
     return (

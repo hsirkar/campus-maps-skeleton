@@ -12,23 +12,23 @@ import { db } from '../../firebase';
 // Loads post list based on params
 export async function loader({ params }) {
     // Home page
-    if(!params.type && !params.id) {
-        console.log("Home page!");
+    if (!params.type && !params.id) {
+        console.log('Home page!');
     }
 
     // Explore
-    if(params.type) {
-        console.log("Type: " + params.type);
+    if (params.type) {
+        console.log('Type: ' + params.type);
     }
 
     // Page details
-    if(params.id) {
-        console.log("Page details");
+    if (params.id) {
+        console.log('Page details');
     }
 
     // User profile
-    if(params.user) {
-        console.log("User profile");
+    if (params.user) {
+        console.log('User profile');
     }
 
     // Fetch posts from Cloud Firestore

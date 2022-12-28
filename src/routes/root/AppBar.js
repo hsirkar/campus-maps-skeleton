@@ -34,7 +34,7 @@ export default function MenuAppBar() {
             <Fade
                 in={navigation.state === 'loading'}
                 style={{
-                    transitionDelay: '300ms'
+                    transitionDelay: '300ms',
                 }}
                 exit={true}
                 unmountOnExit

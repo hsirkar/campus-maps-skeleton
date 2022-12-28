@@ -26,19 +26,19 @@ const theme = createTheme({
         },
     },
     shadows: [
-        "none", 
-        "0px 0px 1px -1px rgba(0,0,0,0.2),0px 0px 1px 0px rgba(0,0,0,0.14),0px 0px 3px 0px rgba(0,0,0,0.12)",
-        defaultTheme.shadows.slice(2)
+        'none',
+        '0px 0px 1px -1px rgba(0,0,0,0.2),0px 0px 1px 0px rgba(0,0,0,0.14),0px 0px 3px 0px rgba(0,0,0,0.12)',
+        defaultTheme.shadows.slice(2),
     ],
     // https://mui.com/material-ui/customization/theme-components/#global-style-overrides
     components: {
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    borderRadius: 0
-                }
-            }
-        }
+                    borderRadius: 0,
+                },
+            },
+        },
     },
     typography: {
         fontSize: 13,
