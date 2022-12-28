@@ -2,13 +2,16 @@ import React from 'react';
 import {
     Avatar,
     Divider,
+    IconButton,
     List,
+    ListItem,
     ListItemAvatar,
     ListItemButton,
     ListItemText,
     Paper,
 } from '@mui/material';
 import {
+    Edit,
     Event,
     FavoriteOutlined,
     HomeRounded,
@@ -18,99 +21,115 @@ import {
 import Scrollbars from 'react-custom-scrollbars';
 import Twemoji from 'react-twemoji';
 
-const metaTypes = {
-    Home: <HomeRounded color="primary" />,
-    Search: <Search color="primary" />,
-    Liked: <FavoriteOutlined color="primary" />,
-};
+import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 
-const placeTypes = {
-    Places: <Place color="primary" />,
-    Bathrooms: <Twemoji children="🚽" />,
-    'Cool Places': <Twemoji children="🛕" />,
-    'Date Spots': <Twemoji children="👫" />,
-    'Hangout Spots': <Twemoji children="🍻" />,
-    'Outdoor & Nature': <Twemoji children="🌴" />,
-    Parking: <Twemoji children="🅿️" />,
-    'Restaurants & Cafes': <Twemoji children="🍽️" />,
-    Shops: <Twemoji children="🛍️" />,
-    'Study Spots': <Twemoji children="👩‍💻" />,
-};
+import postTypes from '../../postTypes.json';
 
-const eventTypes = {
-    Events: <Event color="primary" />,
-    'Campus Traditions': <Twemoji children="🧨" />,
-    'Career Events': <Twemoji children="💼" />,
-    'Club Events': <Twemoji children="🃏" />,
-    Meetups: <Twemoji children="🤝🏽" />,
-    Nightlife: <Twemoji children="🌃" />,
-    'House Parties': <Twemoji children="🥳" />,
-    Performances: <Twemoji children="🎭" />,
-    'Pickup Games': <Twemoji children="🏓" />,
-    'School Sports': <Twemoji children="🏈" />,
-    Volunteering: <Twemoji children="🫶🏾" />,
-    'University Events': <Twemoji children="🎓" />,
-};
+const { events, places } = postTypes;
+
+const drawerItems = [
+    {
+        text: 'Home',
+        to: '/',
+        icon: <HomeRounded color="primary" />,
+    },
+    {
+        text: 'Search',
+        to: '/search',
+        icon: <Search color="primary" />,
+    },
+    {
+        text: 'Liked',
+        to: '/liked',
+        icon: <FavoriteOutlined color="primary" />,
+    },
+    {
+        text: 'Events',
+        to: '/explore/events',
+        icon: <Place color="primary" />,
+    },
+    ...events.map(e => ({
+        text: e.name,
+        to: '/explore/' + e.url,
+        icon: <Twemoji children={e.emoji} />,
+        indent: true,
+    })),
+    {
+        text: 'Places',
+        to: '/explore/places',
+        icon: <Event color="primary" />,
+    },
+    ...places.map(p => ({
+        text: p.name,
+        to: '/explore/' + p.url,
+        icon: <Twemoji children={p.emoji} />,
+        indent: true,
+    })),
+];
+
+const dividers = [2, 3 + events.length];
 
 export default function Drawer() {
+    const { pathname, state } = useLocation();
+
+    function isSelected(item) {
+        return pathname === item.to || state?.context === item.to;
+    }
+
     return (
         <Paper
             elevation={1}
             sx={{ position: 'relative', width: 230, fontSize: '0.95em' }}>
             <Scrollbars style={{ height: 'calc(100vh - 49px)' }} autoHide>
                 <List sx={{ width: '100%' }}>
-                    {Object.keys(metaTypes).map((type, i) => (
-                        <ListItemButton key={i} dense>
-                            <ListItemAvatar sx={{ minWidth: 0, pr: 1.25 }}>
-                                <Avatar
-                                    sx={{
-                                        width: '1.5em',
-                                        height: '1.5em',
-                                        background: 'transparent',
-                                    }}>
-                                    {metaTypes[type]}
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText primary={type} />
-                        </ListItemButton>
-                    ))}
-                    <Divider sx={{ mt: 1, mb: 1 }} />
-                    {Object.keys(eventTypes).map((type, i) => (
-                        <ListItemButton
-                            key={i}
-                            dense
-                            sx={{ ml: i === 0 ? 0 : 2 }}>
-                            <ListItemAvatar sx={{ minWidth: 0, pr: 1.25 }}>
-                                <Avatar
-                                    sx={{
-                                        width: '1.5em',
-                                        height: '1.5em',
-                                        background: 'transparent',
-                                    }}>
-                                    {eventTypes[type]}
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText primary={type} />
-                        </ListItemButton>
-                    ))}
-                    <Divider sx={{ mt: 1, mb: 1 }} />
-                    {Object.keys(placeTypes).map((type, i) => (
-                        <ListItemButton
-                            key={i}
-                            dense
-                            sx={{ ml: i === 0 ? 0 : 2 }}>
-                            <ListItemAvatar sx={{ minWidth: 0, pr: 1.25 }}>
-                                <Avatar
-                                    sx={{
-                                        width: '1.5em',
-                                        height: '1.5em',
-                                        background: 'transparent',
-                                    }}>
-                                    {placeTypes[type]}
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText primary={type} />
-                        </ListItemButton>
+                    {drawerItems.map((item, i) => (
+                        <React.Fragment>
+                            <ListItem
+                                key={i}
+                                dense
+                                disablePadding
+                                secondaryAction={
+                                    i === 0 && (
+                                        <IconButton
+                                            edge="end"
+                                            color="text.secondary"
+                                            size="small">
+                                            <Edit fontSize="small" />
+                                        </IconButton>
+                                    )
+                                }>
+                                <ListItemButton
+                                    sx={{ ml: item.indent ? 2 : 0 }}
+                                    selected={isSelected(item)}
+                                    component={ReactRouterLink}
+                                    to={item.to}
+                                    dense>
+                                    <ListItemAvatar
+                                        sx={{ minWidth: 0, pr: 1.25 }}>
+                                        <Avatar
+                                            sx={{
+                                                width: '1.5em',
+                                                height: '1.5em',
+                                                background: 'transparent',
+                                            }}>
+                                            {item.icon}
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={item.text}
+                                        primaryTypographyProps={{
+                                            fontWeight: isSelected(item)
+                                                ? 600
+                                                : 'inherit',
+                                            color: isSelected(item)
+                                                ? 'primary'
+                                                : 'inherit',
+                                        }}
+                                    />
+                                </ListItemButton>
+                            </ListItem>
+                            {dividers.includes(i) && <Divider sx={{ my: 1 }} />}
+                        </React.Fragment>
                     ))}
                 </List>
             </Scrollbars>
