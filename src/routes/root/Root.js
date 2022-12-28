@@ -9,7 +9,28 @@ import PostList from './PostList';
 import { collection, getDocs } from 'firebase/firestore/lite';
 import { db } from '../../firebase';
 
-export async function loader() {
+// Loads post list based on params
+export async function loader({ params }) {
+    // Home page
+    if(!params.type && !params.id) {
+        console.log("Home page!");
+    }
+
+    // Explore
+    if(params.type) {
+        console.log("Type: " + params.type);
+    }
+
+    // Page details
+    if(params.id) {
+        console.log("Page details");
+    }
+
+    // User profile
+    if(params.user) {
+        console.log("User profile");
+    }
+
     // Fetch posts from Cloud Firestore
     const res = await getDocs(collection(db, 'umd'));
     const posts = res.docs.map(doc => doc.data());
@@ -18,7 +39,7 @@ export async function loader() {
 
 export default function Root() {
     const { pathname, state } = useLocation();
-    const showPostList = !pathname.includes('/p/') || state?.hasContext;
+    const showPostList = !pathname.includes('/p/') || state?.context;
 
     return (
         <React.Fragment>

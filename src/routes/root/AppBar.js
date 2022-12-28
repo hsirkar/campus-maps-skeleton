@@ -6,11 +6,13 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { Avatar, Divider } from '@mui/material';
+import { Avatar, Divider, Fade, LinearProgress } from '@mui/material';
+import { useNavigation } from 'react-router';
 
 // See https://mui.com/material-ui/react-app-bar/#MenuAppBar.js
 export default function MenuAppBar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const navigation = useNavigation();
 
     const handleMenu = event => {
         setAnchorEl(event.currentTarget);
@@ -30,6 +32,23 @@ export default function MenuAppBar() {
                 bgcolor: 'background.paper',
             }}
             elevation={1}>
+            <Fade
+                in={navigation.state === "loading"}
+                style={{
+                    transitionDelay: navigation.state === "loading" ? '800ms' : '0ms',
+                }}
+                unmountOnExit>
+                <LinearProgress
+                    sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: 3,
+                    }}
+                    variant="indeterminate"
+                />
+            </Fade>
             <Toolbar variant="dense">
                 <Typography
                     variant="h4"

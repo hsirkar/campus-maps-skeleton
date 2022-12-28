@@ -19,6 +19,7 @@ import React from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import {
     Link as ReactRouterLink,
+    useLocation,
     useParams,
     useRouteLoaderData,
 } from 'react-router-dom';
@@ -36,6 +37,8 @@ const FilterSelect = styled(Select)(({ theme }) => ({
     },
 }));
 
+const repeat = (arr, n) => Array(n).fill(arr).flat();
+
 export default function PostList() {
     // Get data from above loader
     const { posts } = useRouteLoaderData('root');
@@ -45,6 +48,15 @@ export default function PostList() {
     const handleSortChange = event => {
         setSortBy(event.target.value);
     };
+
+    // Save context
+    const [context, setContext] = React.useState();
+    const { pathname } = useLocation();
+    
+    React.useEffect(() => {
+        if(!pathname.includes("/p/"))
+            setContext(pathname);
+    }, [pathname]);
 
     return (
         <Paper
@@ -79,7 +91,7 @@ export default function PostList() {
                             bgcolor: '#ebf8ff',
                         },
                     }}>
-                    {posts.map((p, i) => (
+                    {repeat(posts, 10).map((p, i) => (
                         <React.Fragment key={i}>
                             <ListItem alignItems="flex-start" sx={{ p: 0 }}>
                                 <ListItemButton
@@ -87,7 +99,7 @@ export default function PostList() {
                                     alignItems="flex-start"
                                     component={ReactRouterLink}
                                     to={`/p/${p.id}`}
-                                    state={{ hasContext: true }}
+                                    state={{ context }}
                                     sx={{ px: 3, py: 1 }}>
                                     <ListItemAvatar>
                                         <Avatar

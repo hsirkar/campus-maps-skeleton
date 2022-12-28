@@ -43,7 +43,7 @@ export async function loader({ params }) {
     return { post };
 }
 
-export default function PostDetail2() {
+export default function PostDetail() {
     const navigate = useNavigate();
     const { state } = useLocation();
     const params = useParams();
@@ -65,13 +65,11 @@ export default function PostDetail2() {
                         </Avatar>
                     }
                     action={
-                        state?.hasContext && (
-                            <IconButton
-                                onClick={() => navigate(-1)}
-                                aria-label="settings">
-                                <Close />
-                            </IconButton>
-                        )
+                        <IconButton
+                            onClick={() => navigate(state?.context || '/')}
+                            aria-label="settings">
+                            <Close />
+                        </IconButton>
                     }
                     title={post.title}
                     subheader={post.user}
