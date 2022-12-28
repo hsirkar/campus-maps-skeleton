@@ -32,31 +32,26 @@ import {
     useLoaderData,
     useNavigate,
     useLocation,
+    useRouteLoaderData,
+    useParams,
 } from 'react-router-dom';
 import { db } from '../../firebase';
 
 export async function loader({ params }) {
-    console.log('LOADER CALLED!');
-
     let res = await getDoc(doc(db, 'umd', params.id));
-    console.log(res);
     const post = res.data();
-
-    console.log(post);
-
-    res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?lat=${post.loc._lat}&lon=${post.loc._long}&format=json`
-    );
-    const json = await res.json();
-    const building = json.display_name.split(',')[0];
-
-    return { post, building };
+    return { post };
 }
 
 export default function PostDetail2() {
-    const { post, building } = useLoaderData();
     const navigate = useNavigate();
     const { state } = useLocation();
+    const params = useParams();
+    const loaderData = useLoaderData();
+
+    const post =
+        useRouteLoaderData('root').posts?.find(p => p.id === params.id) ||
+        loaderData;
 
     return (
         <Paper
@@ -126,7 +121,7 @@ export default function PostDetail2() {
                             <ListItemIcon sx={{ minWidth: 0, pr: 1.5 }}>
                                 <Place color="primary" fontSize="medium" />
                             </ListItemIcon>
-                            <ListItemText primary={building} />
+                            <ListItemText primary={post.nearest_location} />
                         </ListItem>
 
                         <ListItem sx={{ px: 1.25, py: 0.2 }}>

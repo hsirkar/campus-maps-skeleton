@@ -15,14 +15,13 @@ import {
     Paper,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import { collection, getDocs } from 'firebase/firestore/lite';
 import React from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import {
     Link as ReactRouterLink,
+    useParams,
     useRouteLoaderData,
 } from 'react-router-dom';
-import { db } from '../../firebase';
 
 var calendar = require('dayjs/plugin/calendar');
 dayjs.extend(calendar);
@@ -37,27 +36,10 @@ const FilterSelect = styled(Select)(({ theme }) => ({
     },
 }));
 
-export async function loader() {
-    // Fetch posts from Cloud Firestore
-    const res = await getDocs(collection(db, 'umd'));
-    const posts = res.docs.map(doc => doc.data());
-
-    // Fetch locations from Nominatim
-    for (let post of posts) {
-        post['nearest_location'] = (
-            await (
-                await fetch(
-                    `https://nominatim.openstreetmap.org/reverse?lat=${post.loc._lat}&lon=${post.loc._long}&format=json`
-                )
-            ).json()
-        ).display_name.split(',')[0];
-    }
-    return { posts };
-}
-
 export default function PostList() {
     // Get data from above loader
     const { posts } = useRouteLoaderData('root');
+    const { id } = useParams();
 
     const [sortBy, setSortBy] = React.useState(0);
     const handleSortChange = event => {
@@ -101,6 +83,7 @@ export default function PostList() {
                         <React.Fragment key={i}>
                             <ListItem alignItems="flex-start" sx={{ p: 0 }}>
                                 <ListItemButton
+                                    selected={p.id === id}
                                     alignItems="flex-start"
                                     component={ReactRouterLink}
                                     to={`/p/${p.id}`}
