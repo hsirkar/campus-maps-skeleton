@@ -6,7 +6,6 @@ import {
     createRoutesFromElements,
     Route,
     RouterProvider,
-    Routes,
 } from 'react-router-dom';
 
 import theme from './theme';
@@ -24,7 +23,6 @@ import Privacy from './routes/pages/policies/Privacy';
 import Terms from './routes/pages/policies/Terms';
 
 import Root, { loader as rootLoader } from './routes/root/Root';
-import PostList, { loader as postListLoader } from './routes/root/PostList';
 import PostDetail, {
     loader as postDetailLoader,
 } from './routes/root/PostDetail';
@@ -32,7 +30,13 @@ import PostDetail, {
 const router = createBrowserRouter(
     createRoutesFromElements(
         <React.Fragment>
-            <Route loader={rootLoader} path="*" element={<Root />}></Route>
+            <Route id="root" loader={rootLoader} path="*" element={<Root />}>
+                <Route
+                    loader={postDetailLoader}
+                    path="p/:id"
+                    element={<PostDetail />}
+                />
+            </Route>
             <Route element={<Auth />}>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />

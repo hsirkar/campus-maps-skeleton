@@ -24,19 +24,21 @@ import {
     Typography,
 } from '@mui/material';
 import { red } from '@mui/material/colors';
-import { Box, Stack } from '@mui/system';
+import { Stack } from '@mui/system';
 import { getDoc, doc } from 'firebase/firestore/lite';
 import React from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import {
     useLoaderData,
-    Link as ReactRouterLink,
     useNavigate,
+    useLocation,
 } from 'react-router-dom';
 import { db } from '../../firebase';
 
 export async function loader({ params }) {
-    let res = await getDoc(doc(db, 'umd', params.postId));
+    console.log('LOADER CALLED!');
+
+    let res = await getDoc(doc(db, 'umd', params.id));
     console.log(res);
     const post = res.data();
 
@@ -51,13 +53,10 @@ export async function loader({ params }) {
     return { post, building };
 }
 
-export function PostDetail2() {
-    return <div>Post details!</div>;
-}
-
-export default function PostDetail() {
+export default function PostDetail2() {
     const { post, building } = useLoaderData();
     const navigate = useNavigate();
+    const { state } = useLocation();
 
     return (
         <Paper
@@ -71,11 +70,13 @@ export default function PostDetail() {
                         </Avatar>
                     }
                     action={
-                        <IconButton
-                            onClick={() => navigate(-1)}
-                            aria-label="settings">
-                            <Close />
-                        </IconButton>
+                        state?.hasContext && (
+                            <IconButton
+                                onClick={() => navigate(-1)}
+                                aria-label="settings">
+                                <Close />
+                            </IconButton>
+                        )
                     }
                     title={post.title}
                     subheader={post.user}

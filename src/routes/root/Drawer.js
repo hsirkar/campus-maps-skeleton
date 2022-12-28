@@ -56,7 +56,7 @@ export default function Drawer() {
     return (
         <Paper
             elevation={1}
-            sx={{ position: 'relative', width: 240, fontSize: '0.95em' }}>
+            sx={{ position: 'relative', width: 230, fontSize: '0.95em' }}>
             <Scrollbars style={{ height: 'calc(100vh - 49px)' }} autoHide>
                 <List sx={{ width: '100%' }}>
                     {Object.keys(metaTypes).map((type, i) => (
