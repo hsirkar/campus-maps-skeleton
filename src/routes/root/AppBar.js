@@ -27,17 +27,18 @@ export default function MenuAppBar() {
             position="relative"
             sx={{
                 px: 1,
-                borderBottom: '1px solid rgba(0,0,0,0.1)',
                 zIndex: theme => theme.zIndex.drawer + 1,
                 bgcolor: 'background.paper',
             }}
             elevation={1}>
             <Fade
-                in={navigation.state === "loading"}
+                in={navigation.state === 'loading'}
                 style={{
-                    transitionDelay: navigation.state === "loading" ? '800ms' : '0ms',
+                    transitionDelay: '300ms'
                 }}
-                unmountOnExit>
+                exit={true}
+                unmountOnExit
+                mountOnEnter>
                 <LinearProgress
                     sx={{
                         position: 'absolute',
@@ -45,8 +46,12 @@ export default function MenuAppBar() {
                         left: 0,
                         width: '100%',
                         height: 3,
+                        '& .MuiLinearProgress-bar': {
+                            animationDuration: '0s',
+                        },
                     }}
-                    variant="indeterminate"
+                    variant="determinate"
+                    value={navigation.state === 'loading' ? 65 : 100}
                 />
             </Fade>
             <Toolbar variant="dense">
