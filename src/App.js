@@ -1,7 +1,13 @@
 import React from 'react';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+    createBrowserRouter,
+    createRoutesFromElements,
+    Route,
+    RouterProvider,
+    Routes,
+} from 'react-router-dom';
 
 import theme from './theme';
 
@@ -18,75 +24,32 @@ import Privacy from './routes/pages/policies/Privacy';
 import Terms from './routes/pages/policies/Terms';
 
 import Root, { loader as rootLoader } from './routes/root/Root';
-import PostList from './routes/root/PostList';
+import PostList, { loader as postListLoader } from './routes/root/PostList';
 import PostDetail, {
     loader as postDetailLoader,
 } from './routes/root/PostDetail';
 
-// See https://reactrouter.com/en/main/start/overview
-const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <Root />,
-        id: 'root',
-        loader: rootLoader,
-        children: [
-            {
-                path: '/',
-                element: <PostList />,
-            },
-            {
-                path: '/posts/:id',
-                element: <PostDetail />,
-                loader: postDetailLoader,
-            },
-        ],
-    },
-    {
-        element: <Auth />,
-        children: [
-            {
-                path: 'login',
-                element: <Login />,
-            },
-            {
-                path: 'register',
-                element: <Register />,
-            },
-            {
-                path: 'password-reset',
-                element: <Reset />,
-            },
-            {
-                path: 'verify',
-                element: <Verify />,
-            },
-            {
-                path: 'logout',
-                element: <Logout />,
-            },
-        ],
-    },
-    {
-        element: <Page />,
-        children: [
-            {
-                path: 'help',
-                element: <Help />,
-            },
-            {
-                path: 'policies/privacy',
-                element: <Privacy />,
-            },
-            {
-                path: 'policies/terms',
-                element: <Terms />,
-            },
-        ],
-    },
-]);
+const router = createBrowserRouter(
+    createRoutesFromElements(
+        <React.Fragment>
+            <Route loader={rootLoader} path="*" element={<Root />}></Route>
+            <Route element={<Auth />}>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/password-reset" element={<Reset />} />
+                <Route path="/verify" element={<Verify />} />
+                <Route path="/logout" element={<Logout />} />
+            </Route>
+            <Route element={<Page />}>
+                <Route path="/help" element={<Help />} />
+                <Route path="/policies/privacy" element={<Privacy />} />
+                <Route path="/policies/terms" element={<Terms />} />
+            </Route>
+        </React.Fragment>
+    )
+);
 
-function App() {
+export default function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -94,5 +57,3 @@ function App() {
         </ThemeProvider>
     );
 }
-
-export default App;
