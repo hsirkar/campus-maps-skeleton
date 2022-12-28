@@ -37,8 +37,6 @@ const FilterSelect = styled(Select)(({ theme }) => ({
     },
 }));
 
-const repeat = (arr, n) => Array(n).fill(arr).flat();
-
 export default function PostList() {
     // Get data from above loader
     const { posts } = useRouteLoaderData('root');
@@ -90,7 +88,7 @@ export default function PostList() {
                             bgcolor: '#ebf8ff',
                         },
                     }}>
-                    {repeat(posts, 10).map((p, i) => (
+                    {posts.map((p, i) => (
                         <React.Fragment key={i}>
                             <ListItem alignItems="flex-start" sx={{ p: 0 }}>
                                 <ListItemButton

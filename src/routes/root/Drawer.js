@@ -83,9 +83,8 @@ export default function Drawer() {
             <Scrollbars style={{ height: 'calc(100vh - 49px)' }} autoHide>
                 <List sx={{ width: '100%' }}>
                     {drawerItems.map((item, i) => (
-                        <React.Fragment>
+                        <React.Fragment key={i}>
                             <ListItem
-                                key={i}
                                 dense
                                 disablePadding
                                 secondaryAction={

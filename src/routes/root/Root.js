@@ -32,7 +32,7 @@ export async function loader({ params }) {
     }
 
     // Fetch posts from Cloud Firestore
-    const res = await getDocs(collection(db, 'umd'));
+    const res = await getDocs(collection(db, 'sample'));
     const posts = res.docs.map(doc => doc.data());
     return { posts };
 }

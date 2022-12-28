@@ -38,7 +38,7 @@ import {
 import { db } from '../../firebase';
 
 export async function loader({ params }) {
-    let res = await getDoc(doc(db, 'umd', params.id));
+    let res = await getDoc(doc(db, 'sample', params.id));
     const post = res.data();
     return { post };
 }
@@ -144,8 +144,8 @@ export default function PostDetail() {
                     </Typography>
 
                     <List>
-                        {post.comments.map(comment => (
-                            <ListItem key={comment} alignItems="flex-start">
+                        {post.comments.map((comment, i) => (
+                            <ListItem key={i} alignItems="flex-start">
                                 <ListItemAvatar>
                                     <Avatar>
                                         <Person />
