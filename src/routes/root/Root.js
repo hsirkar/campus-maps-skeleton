@@ -6,40 +6,58 @@ import AppBar from './AppBar';
 import Drawer from './Drawer';
 import Map from './Map';
 import PostList from './PostList';
-import { collection, getDocs } from 'firebase/firestore/lite';
+import {
+    collection,
+    getDocs,
+    query,
+    where,
+    limit,
+} from 'firebase/firestore/lite';
 import { db } from '../../firebase';
 
+let cachedLoaderData = { posts: [] };
+
 // Loads post list based on params
-export async function loader({ params }) {
+export async function loader({ request, params }) {
+    // Page details - don't load anything
+    if (request.url.includes('/p/')) {
+        return cachedLoaderData;
+    }
+
+    // Create a reference to the sample collection
+    const sampleRef = collection(db, 'sample');
+    let q;
+
+    // Create a query depending on url params
     // Home page
     if (!params.type && !params.id) {
-        console.log('Home page!');
+        q = query(sampleRef, limit(50));
     }
 
     // Explore
-    if (params.type) {
-        console.log('Type: ' + params.type);
+    if (params.subtype) {
+        q = query(
+            sampleRef,
+            where('subtype', 'array-contains', params.subtype)
+        );
+    } else if (params.type) {
+        q = query(sampleRef, where('type', '==', params.type));
     }
 
-    // Page details
-    if (params.id) {
-        console.log('Page details');
-    }
-
-    // User profile
-    if (params.user) {
-        console.log('User profile');
-    }
-
-    // Fetch posts from Cloud Firestore
-    const res = await getDocs(collection(db, 'sample'));
+    // Execute query
+    const res = await getDocs(q);
     const posts = res.docs.map(doc => doc.data());
+
+    // Cache and return
+    cachedLoaderData = { posts };
     return { posts };
 }
 
 export default function Root() {
     const { pathname, state } = useLocation();
-    const showPostList = !pathname.includes('/p/') || state?.context;
+    const showPostList = !pathname.includes('/p/') || !!state?.context;
+
+    console.log('showpostlist', showPostList);
 
     return (
         <React.Fragment>

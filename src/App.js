@@ -31,7 +31,7 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <React.Fragment>
             <Route id="root" loader={rootLoader} path="*" element={<Root />}>
-                <Route path="explore/:type" />
+                <Route path="explore/:type/:subtype?" />
                 <Route
                     loader={postDetailLoader}
                     path="p/:id"

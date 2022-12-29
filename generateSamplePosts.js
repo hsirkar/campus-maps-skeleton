@@ -9,9 +9,9 @@ const {
     getFirestore,
 } = require('firebase/firestore/lite');
 
-const types = require('./src/postTypes.json');
-const eventTypes = types.events.map(e => e.name);
-const placeTypes = types.places.map(p => p.name);
+const types = require('./src/postTypes.js');
+const eventTypes = types.events.map(e => e.url);
+const placeTypes = types.places.map(p => p.url);
 
 const { initializeApp } = require('@firebase/app');
 

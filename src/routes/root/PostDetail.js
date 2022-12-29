@@ -54,8 +54,8 @@ export default function PostDetail() {
     const loaderData = useLoaderData();
 
     const post =
-        useRouteLoaderData('root').posts?.find(p => p.id === params.id) ||
-        loaderData;
+        useRouteLoaderData('root')?.posts?.find(p => p.id === params.id) ||
+        loaderData.post;
 
     return (
         <Paper

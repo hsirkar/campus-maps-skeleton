@@ -1,4 +1,4 @@
-import {
+const {
     AutoStories,
     Celebration,
     Diversity3,
@@ -19,7 +19,7 @@ import {
     VolunteerActivism,
     Wc,
     Work,
-} from '@mui/icons-material';
+} = require('@mui/icons-material');
 
 const postTypes = {
     events: [
@@ -148,4 +148,4 @@ const postTypes = {
     ],
 };
 
-export default postTypes;
+module.exports = postTypes;

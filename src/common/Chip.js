@@ -6,7 +6,7 @@ import types from '../postTypes';
 const subtypes = types.events.concat(types.places);
 
 export default function TypeChip({ type, subtype, variant = 'light' }) {
-    const icon = subtypes.find(item => item.name === subtype).icon;
+    const { name, icon } = subtypes.find(item => item.url === subtype);
     const background = variant === 'light' ? 50 : 500;
     return (
         <Chip
@@ -16,7 +16,7 @@ export default function TypeChip({ type, subtype, variant = 'light' }) {
                 fontWeight: 500,
                 bgcolor:
                     type === 'places' ? blue[background] : green[background],
-                '&:not(:first-child)': { ml: 0.25 },
+                '&:not(:first-of-type)': { ml: 0.25 },
                 color:
                     variant === 'light'
                         ? type === 'places'
@@ -25,16 +25,8 @@ export default function TypeChip({ type, subtype, variant = 'light' }) {
                         : 'white',
             }}
             size="small"
-            label={subtype}
+            label={name}
             icon={React.createElement(icon, { color: 'inherit' })}
-            // avatar={
-            //     <Avatar
-            //         src={
-            //             parse(
-            //                 subtypes.find(item => item.name === subtype).emoji
-            //             )[0].url
-            //         }></Avatar>
-            // }
         />
     );
 }

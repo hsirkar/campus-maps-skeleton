@@ -7,7 +7,7 @@ import types from '../postTypes';
 const subtypes = types.events.concat(types.places);
 
 export default function Pin({ post, variant = 'dark' }) {
-    const icon = subtypes.find(item => item.name === post.subtype[0]).icon;
+    const icon = subtypes.find(item => item.url === post.subtype[0]).icon;
     const background = variant === 'light' ? 50 : 500;
     return (
         <Box

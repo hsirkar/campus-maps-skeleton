@@ -47,7 +47,7 @@ export const drawerItems = [
     },
     ...events.map(e => ({
         text: e.name,
-        to: '/explore/' + e.url,
+        to: '/explore/events/' + e.url,
         icon: <e.icon sx={{ color: 'text.secondary' }} />,
         indent: true,
     })),
@@ -58,7 +58,7 @@ export const drawerItems = [
     },
     ...places.map(p => ({
         text: p.name,
-        to: '/explore/' + p.url,
+        to: '/explore/places/' + p.url,
         icon: <p.icon sx={{ color: 'text.secondary' }} />,
         indent: true,
     })),
