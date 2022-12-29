@@ -1,5 +1,4 @@
 import {
-    Avatar,
     Divider,
     FormControl,
     Input,
@@ -24,8 +23,14 @@ import {
     useRouteLoaderData,
 } from 'react-router-dom';
 
-var calendar = require('dayjs/plugin/calendar');
+import calendar from 'dayjs/plugin/calendar';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+import TypeChip from '../../common/Chip';
+import PostAvatar from '../../common/PostAvatar';
+
 dayjs.extend(calendar);
+dayjs.extend(relativeTime);
 
 const FilterSelect = styled(Select)(({ theme }) => ({
     borderRadius: 2,
@@ -99,10 +104,7 @@ export default function PostList() {
                                     state={{ context }}
                                     sx={{ px: 3, py: 1 }}>
                                     <ListItemAvatar>
-                                        <Avatar
-                                            alt={p.user}
-                                            src="/static/images/avatar/1.jpg"
-                                        />
+                                        <PostAvatar p={p} />
                                     </ListItemAvatar>
                                     <ListItemText
                                         primaryTypographyProps={{
@@ -114,30 +116,25 @@ export default function PostList() {
                                         primary={p.title}
                                         secondary={
                                             <React.Fragment>
-                                                <Typography
-                                                    sx={{
-                                                        display: 'inline-block',
-                                                        fontSize: '0.85em',
-                                                        textTransform:
-                                                            'uppercase',
-                                                        color: 'text.secondary',
-                                                        fontWeight: 500,
-                                                        borderRadius: 2,
-                                                        background: '#EBEBEB',
-                                                        px: 0.5,
-                                                        my: 0.5,
-                                                    }}>
-                                                    Event
-                                                </Typography>
+                                                {p.subtype.map((s, i) => (
+                                                    <TypeChip
+                                                        type={p.type}
+                                                        subtype={s}
+                                                        key={i}
+                                                    />
+                                                ))}
                                                 <Typography>
                                                     {p.nearest_location}
                                                 </Typography>
                                                 <Typography>
-                                                    {dayjs().calendar(
-                                                        dayjs.unix(
+                                                    {dayjs
+                                                        .unix(
                                                             p.eventTime.seconds
                                                         )
-                                                    )}
+                                                        .calendar(null, {
+                                                            sameElse:
+                                                                'M/D/YY [at] h:mm A',
+                                                        })}
                                                 </Typography>
                                             </React.Fragment>
                                         }

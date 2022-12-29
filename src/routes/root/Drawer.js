@@ -15,7 +15,7 @@ import {
     Event,
     Favorite,
     HomeRounded,
-    Place,
+    PlaceOutlined,
     Search,
 } from '@mui/icons-material';
 import Scrollbars from 'react-custom-scrollbars';
@@ -31,22 +31,22 @@ export const drawerItems = [
     {
         text: 'Home',
         to: '/',
-        icon: <HomeRounded color="primary" />,
+        icon: <HomeRounded sx={{ color: 'text.secondary' }} />,
     },
     {
         text: 'Search',
         to: '/search',
-        icon: <Search color="primary" />,
+        icon: <Search sx={{ color: 'text.secondary' }} />,
     },
     {
         text: 'Liked',
         to: '/liked',
-        icon: <Favorite color="primary" />,
+        icon: <Favorite sx={{ color: 'text.secondary' }} />,
     },
     {
         text: 'Events',
         to: '/explore/events',
-        icon: <Event color="primary" />,
+        icon: <Event sx={{ color: 'text.secondary' }} />,
     },
     ...events.map(e => ({
         text: e.name,
@@ -63,7 +63,7 @@ export const drawerItems = [
     {
         text: 'Places',
         to: '/explore/places',
-        icon: <Place color="primary" />,
+        icon: <PlaceOutlined sx={{ color: 'text.secondary' }} />,
     },
     ...places.map(p => ({
         text: p.name,
@@ -133,7 +133,7 @@ export default function Drawer() {
                                                 ? 600
                                                 : 'inherit',
                                             color: isSelected(item)
-                                                ? 'primary'
+                                                ? 'inherit'
                                                 : 'inherit',
                                         }}
                                     />

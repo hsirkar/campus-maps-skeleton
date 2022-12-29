@@ -1,3 +1,4 @@
+import { blue, red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
 const defaultTheme = createTheme();
@@ -24,6 +25,8 @@ const theme = createTheme({
             800: '#1A202C',
             900: '#171923',
         },
+        events: blue[500],
+        places: red[500],
     },
     shadows: [
         'none',

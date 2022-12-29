@@ -1,11 +1,12 @@
 import {
-    CalendarToday,
     Close,
     CommentOutlined,
+    EventRepeat,
     FavoriteBorderOutlined,
     InfoOutlined,
     Person,
     Place,
+    Schedule,
     Share,
 } from '@mui/icons-material';
 import {
@@ -23,8 +24,8 @@ import {
     Paper,
     Typography,
 } from '@mui/material';
-import { red } from '@mui/material/colors';
 import { Stack } from '@mui/system';
+import dayjs from 'dayjs';
 import { getDoc, doc } from 'firebase/firestore/lite';
 import React from 'react';
 import Scrollbars from 'react-custom-scrollbars';
@@ -35,6 +36,8 @@ import {
     useRouteLoaderData,
     useParams,
 } from 'react-router-dom';
+import TypeChip from '../../common/Chip';
+import PostAvatar from '../../common/PostAvatar';
 import { db } from '../../firebase';
 
 export async function loader({ params }) {
@@ -59,11 +62,7 @@ export default function PostDetail() {
             sx={{ position: 'relative', width: 400, fontSize: '0.95em' }}>
             <Scrollbars style={{ height: 'calc(100vh - 49px)' }} autoHide>
                 <CardHeader
-                    avatar={
-                        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                            R
-                        </Avatar>
-                    }
+                    avatar={<PostAvatar p={post} />}
                     action={
                         <IconButton
                             onClick={() => navigate(state?.context || '/')}
@@ -72,7 +71,9 @@ export default function PostDetail() {
                         </IconButton>
                     }
                     title={post.title}
-                    subheader={post.user}
+                    subheader={`${post.user} • ${dayjs
+                        .unix(post.eventTime.seconds)
+                        .fromNow()}`}
                     titleTypographyProps={{
                         variant: 'h3',
                         sx: { mb: 0.5 },
@@ -80,7 +81,10 @@ export default function PostDetail() {
                 />
 
                 <CardContent sx={{ pt: 0 }}>
-                    <Divider />
+                    {post.subtype.map((s, i) => (
+                        <TypeChip type={post.type} subtype={s} key={i} />
+                    ))}
+                    <Divider sx={{ mt: 1 }} />
                     <Stack direction="row" spacing="1" mb={1} mt={1}>
                         <Button
                             sx={{ width: 90, color: 'text.secondary' }}
@@ -105,7 +109,9 @@ export default function PostDetail() {
                     <Divider />
 
                     <List mt={1.5}>
-                        <ListItem sx={{ px: 1.25, py: 0.25 }}>
+                        <ListItem
+                            sx={{ px: 1.25, py: 0.25 }}
+                            alignItems="flex-start">
                             <ListItemIcon sx={{ minWidth: 0, pr: 1.5 }}>
                                 <InfoOutlined
                                     color="primary"
@@ -124,16 +130,23 @@ export default function PostDetail() {
 
                         <ListItem sx={{ px: 1.25, py: 0.2 }}>
                             <ListItemIcon sx={{ minWidth: 0, pr: 1.5 }}>
-                                <CalendarToday
+                                <Schedule color="primary" fontSize="medium" />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={dayjs
+                                    .unix(post.eventTime.seconds)
+                                    .format('dddd, MMMM D, YYYY [at] h:mm A')}
+                            />
+                        </ListItem>
+
+                        <ListItem sx={{ px: 1.25, py: 0.2 }}>
+                            <ListItemIcon sx={{ minWidth: 0, pr: 1.5 }}>
+                                <EventRepeat
                                     color="primary"
                                     fontSize="medium"
                                 />
                             </ListItemIcon>
-                            <ListItemText
-                                primary={new Date(
-                                    post.eventTime.seconds * 1000
-                                ).toLocaleString('en-US', { timeZone: 'utc' })}
-                            />
+                            <ListItemText primary="One-time event" />
                         </ListItem>
                     </List>
 
