@@ -54,9 +54,9 @@ const uid = function () {
 
 function generateSamplePosts(num) {
     const posts = [];
-    const isPlace = Math.random() < 0.5;
 
     for (let i = 0; i < num; i++) {
+        const isPlace = Math.random() < 0.5;
         posts.push({
             id: uid(),
             comments: Array(irange(0, 15))
