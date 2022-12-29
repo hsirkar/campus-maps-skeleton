@@ -1,7 +1,19 @@
 import * as React from 'react';
 import { Box } from '@mui/system';
+import Pin from '../../common/Pin';
+import { useRouteLoaderData } from 'react-router';
 
-export default function Map({ posts }) {
+function range(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function irange(min, max) {
+    return Math.round(range(min, max));
+}
+
+export default function Map() {
+    const { posts } = useRouteLoaderData('root');
+
     return (
         <Box
             sx={{
@@ -10,13 +22,21 @@ export default function Map({ posts }) {
                 bgcolor: 'grey.200',
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundImage:
-                    'url("https://api.mapbox.com/styles/v1/mapbox/light-v11/static/-76.9426,38.9869,16,0.00,0.00/1000x800?access_token=pk.eyJ1IjoicmFrcmlzaCIsImEiOiJjamptczYxOGMzc3dzM3BvbDB0andscXdwIn0.GY-HcAV_MakM6gwzSS17Fg")',
+                backgroundImage: 'url("/mapbox-placeholder.png")',
+                overflow: 'hidden',
+                position: 'relative',
             }}>
-            {/* <Typography color="text.secondary" fontSize="2em">
-                Map goes here
-            </Typography> */}
-            {/* <Pin /> */}
+            {posts.map(post => (
+                <Pin
+                    key={post.id}
+                    post={post}
+                    sx={{
+                        position: 'absolute',
+                        bottom: irange(0, 1500),
+                        right: irange(0, 1500),
+                    }}
+                />
+            ))}
         </Box>
     );
 }
