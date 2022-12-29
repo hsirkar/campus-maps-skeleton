@@ -13,21 +13,21 @@ import {
 import {
     Edit,
     Event,
-    FavoriteOutlined,
+    Favorite,
     HomeRounded,
     Place,
     Search,
 } from '@mui/icons-material';
 import Scrollbars from 'react-custom-scrollbars';
-import Twemoji from 'react-twemoji';
 
 import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 
 import postTypes from '../../postTypes.json';
+import { parse } from 'twemoji-parser';
 
 const { events, places } = postTypes;
 
-const drawerItems = [
+export const drawerItems = [
     {
         text: 'Home',
         to: '/',
@@ -41,28 +41,40 @@ const drawerItems = [
     {
         text: 'Liked',
         to: '/liked',
-        icon: <FavoriteOutlined color="primary" />,
+        icon: <Favorite color="primary" />,
     },
     {
         text: 'Events',
         to: '/explore/events',
-        icon: <Place color="primary" />,
+        icon: <Event color="primary" />,
     },
     ...events.map(e => ({
         text: e.name,
         to: '/explore/' + e.url,
-        icon: <Twemoji children={e.emoji} />,
+        icon: (
+            <img
+                alt=""
+                style={{ width: '1em', height: '1em' }}
+                src={parse(e.emoji)[0].url}
+            />
+        ),
         indent: true,
     })),
     {
         text: 'Places',
         to: '/explore/places',
-        icon: <Event color="primary" />,
+        icon: <Place color="primary" />,
     },
     ...places.map(p => ({
         text: p.name,
         to: '/explore/' + p.url,
-        icon: <Twemoji children={p.emoji} />,
+        icon: (
+            <img
+                alt=""
+                style={{ width: '1em', height: '1em' }}
+                src={parse(p.emoji)[0].url}
+            />
+        ),
         indent: true,
     })),
 ];
