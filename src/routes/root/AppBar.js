@@ -1,12 +1,18 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import { Avatar, Divider, Fade, LinearProgress } from '@mui/material';
+
+import {
+    AppBar,
+    Avatar,
+    Box,
+    Divider,
+    Fade,
+    IconButton,
+    LinearProgress,
+    Menu,
+    MenuItem,
+    Toolbar,
+    Typography,
+} from '@mui/material';
 import { useNavigation } from 'react-router';
 
 // See https://mui.com/material-ui/react-app-bar/#MenuAppBar.js

@@ -1,19 +1,20 @@
 import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-import { Box } from '@mui/material';
 
+import { Box } from '@mui/material';
+import {
+    collection,
+    getDocs,
+    limit,
+    query,
+    where,
+} from 'firebase/firestore/lite';
+import { Outlet, useLocation } from 'react-router-dom';
+
+import { db } from '../../firebase';
 import AppBar from './AppBar';
 import Drawer from './Drawer';
 import Map from './Map';
 import PostList from './PostList';
-import {
-    collection,
-    getDocs,
-    query,
-    where,
-    limit,
-} from 'firebase/firestore/lite';
-import { db } from '../../firebase';
 
 let cachedLoaderData = { posts: [] };
 

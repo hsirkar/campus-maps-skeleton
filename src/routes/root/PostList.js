@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
     Divider,
     FormControl,
@@ -8,13 +10,14 @@ import {
     ListItemButton,
     ListItemText,
     MenuItem,
-    Select,
-    styled,
-    Typography,
     Paper,
+    Select,
+    Typography,
+    styled,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import React from 'react';
+import calendar from 'dayjs/plugin/calendar';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import Scrollbars from 'react-custom-scrollbars';
 import {
     Link as ReactRouterLink,
@@ -22,9 +25,6 @@ import {
     useParams,
     useRouteLoaderData,
 } from 'react-router-dom';
-
-import calendar from 'dayjs/plugin/calendar';
-import relativeTime from 'dayjs/plugin/relativeTime';
 
 import TypeChip from '../../common/Chip';
 import PostAvatar from '../../common/PostAvatar';

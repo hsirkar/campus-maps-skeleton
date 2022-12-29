@@ -1,6 +1,8 @@
 import React from 'react';
-import { Typography, Box } from '@mui/material';
+
+import { Box, Typography } from '@mui/material';
 import { Navigate, useSearchParams } from 'react-router-dom';
+
 import { logout } from '../../firebase';
 
 export default function Logout() {

@@ -1,4 +1,12 @@
 import React from 'react';
+
+import {
+    Event,
+    Favorite,
+    HomeRounded,
+    PlaceOutlined,
+    Search,
+} from '@mui/icons-material';
 import {
     Avatar,
     Divider,
@@ -9,15 +17,7 @@ import {
     ListItemText,
     Paper,
 } from '@mui/material';
-import {
-    Event,
-    Favorite,
-    HomeRounded,
-    PlaceOutlined,
-    Search,
-} from '@mui/icons-material';
 import Scrollbars from 'react-custom-scrollbars';
-
 import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 
 import postTypes from '../../postTypes';

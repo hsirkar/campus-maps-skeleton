@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { ExpandMore } from '@mui/icons-material';
 import {
     Accordion,
@@ -8,7 +10,6 @@ import {
     Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
 
 const faqs = [
     {

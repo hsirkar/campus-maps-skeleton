@@ -1,7 +1,9 @@
+import React from 'react';
+
 import { Box, Typography } from '@mui/material';
 import { Container } from '@mui/system';
-import React from 'react';
 import { Outlet } from 'react-router';
+
 import Copyright from '../../common/Copyright';
 
 export default function Auth() {

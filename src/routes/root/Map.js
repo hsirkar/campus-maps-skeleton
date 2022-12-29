@@ -1,7 +1,9 @@
 import * as React from 'react';
+
 import { Box } from '@mui/system';
-import Pin from '../../common/Pin';
 import { useRouteLoaderData } from 'react-router';
+
+import Pin from '../../common/Pin';
 
 function range(min, max) {
     return Math.random() * (max - min) + min;

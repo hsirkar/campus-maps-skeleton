@@ -1,8 +1,10 @@
-import { Box, darken } from '@mui/material';
-import { green, blue, grey } from '@mui/material/colors';
 import React from 'react';
 
+import { Box, darken } from '@mui/material';
+import { blue, green, grey } from '@mui/material/colors';
+
 import types from '../postTypes';
+
 const subtypes = types.events.concat(types.places);
 
 export default function Pin({

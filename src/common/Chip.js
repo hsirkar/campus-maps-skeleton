@@ -1,8 +1,10 @@
-import { Chip, darken } from '@mui/material';
-import { green, blue } from '@mui/material/colors';
 import React from 'react';
 
+import { Chip, darken } from '@mui/material';
+import { blue, green } from '@mui/material/colors';
+
 import types from '../postTypes';
+
 const subtypes = types.events.concat(types.places);
 
 export default function TypeChip({ type, subtype, variant = 'light' }) {

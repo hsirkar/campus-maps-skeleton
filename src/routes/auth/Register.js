@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
     Button,
     Checkbox,
@@ -12,7 +14,6 @@ import {
     Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 
 export default function Register() {

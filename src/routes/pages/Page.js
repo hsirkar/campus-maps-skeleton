@@ -1,7 +1,9 @@
+import React from 'react';
+
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
-import React from 'react';
 import { Outlet } from 'react-router';
+
 import Copyright from '../../common/Copyright';
 
 export default function Page() {

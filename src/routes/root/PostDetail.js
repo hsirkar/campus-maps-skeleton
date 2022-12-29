@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
     Close,
     CommentOutlined,
@@ -26,16 +28,16 @@ import {
 } from '@mui/material';
 import { Stack } from '@mui/system';
 import dayjs from 'dayjs';
-import { getDoc, doc } from 'firebase/firestore/lite';
-import React from 'react';
+import { doc, getDoc } from 'firebase/firestore/lite';
 import Scrollbars from 'react-custom-scrollbars';
 import {
     useLoaderData,
-    useNavigate,
     useLocation,
-    useRouteLoaderData,
+    useNavigate,
     useParams,
+    useRouteLoaderData,
 } from 'react-router-dom';
+
 import TypeChip from '../../common/Chip';
 import PostAvatar from '../../common/PostAvatar';
 import { db } from '../../firebase';

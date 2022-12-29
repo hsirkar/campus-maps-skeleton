@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { PlaceOutlined } from '@mui/icons-material';
-import { Avatar, darken, Typography } from '@mui/material';
+import { Avatar, Typography, darken } from '@mui/material';
+import { blue, green } from '@mui/material/colors';
 import dayjs from 'dayjs';
-import { green, blue } from '@mui/material/colors';
 
 export default function PostAvatar({ p }) {
     const isPlace = p.type === 'places';
