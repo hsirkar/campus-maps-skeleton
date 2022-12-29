@@ -57,8 +57,6 @@ export default function Root() {
     const { pathname, state } = useLocation();
     const showPostList = !pathname.includes('/p/') || !!state?.context;
 
-    console.log('showpostlist', showPostList);
-
     return (
         <React.Fragment>
             <AppBar />
