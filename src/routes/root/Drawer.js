@@ -2,7 +2,6 @@ import React from 'react';
 import {
     Avatar,
     Divider,
-    IconButton,
     List,
     ListItem,
     ListItemAvatar,
@@ -11,7 +10,6 @@ import {
     Paper,
 } from '@mui/material';
 import {
-    Edit,
     Event,
     Favorite,
     HomeRounded,
@@ -96,19 +94,7 @@ export default function Drawer() {
                 <List sx={{ width: '100%' }}>
                     {drawerItems.map((item, i) => (
                         <React.Fragment key={i}>
-                            <ListItem
-                                dense
-                                disablePadding
-                                secondaryAction={
-                                    i === 0 && (
-                                        <IconButton
-                                            edge="end"
-                                            color="text.secondary"
-                                            size="small">
-                                            <Edit fontSize="small" />
-                                        </IconButton>
-                                    )
-                                }>
+                            <ListItem dense disablePadding>
                                 <ListItemButton
                                     sx={{ ml: item.indent ? 2 : 0 }}
                                     selected={isSelected(item)}
