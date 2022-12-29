@@ -1,31 +1,40 @@
-import { Avatar, Chip } from '@mui/material';
-import { blue, red } from '@mui/material/colors';
+import { Chip, darken } from '@mui/material';
+import { green, blue } from '@mui/material/colors';
 import React from 'react';
-import { parse } from 'twemoji-parser';
 
-import types from '../postTypes.json';
+import types from '../postTypes';
 const subtypes = types.events.concat(types.places);
 
-export default function TypeChip({ type, subtype }) {
+export default function TypeChip({ type, subtype, variant = 'light' }) {
+    const icon = subtypes.find(item => item.name === subtype).icon;
+    const background = variant === 'light' ? 50 : 500;
     return (
         <Chip
             sx={{
                 mt: 0.5,
                 mb: 0.5,
-                fontWeight: 600,
-                bgcolor: type === 'places' ? red[50] : blue[50],
+                fontWeight: 500,
+                bgcolor:
+                    type === 'places' ? blue[background] : green[background],
                 '&:not(:first-child)': { ml: 0.25 },
+                color:
+                    variant === 'light'
+                        ? type === 'places'
+                            ? darken(blue[500], 0.3)
+                            : darken(green[500], 0.3)
+                        : 'white',
             }}
             size="small"
             label={subtype}
-            avatar={
-                <Avatar
-                    src={
-                        parse(
-                            subtypes.find(item => item.name === subtype).emoji
-                        )[0].url
-                    }></Avatar>
-            }
+            icon={React.createElement(icon, { color: 'inherit' })}
+            // avatar={
+            //     <Avatar
+            //         src={
+            //             parse(
+            //                 subtypes.find(item => item.name === subtype).emoji
+            //             )[0].url
+            //         }></Avatar>
+            // }
         />
     );
 }

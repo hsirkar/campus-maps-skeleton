@@ -1,8 +1,8 @@
 import React from 'react';
 import { PlaceOutlined } from '@mui/icons-material';
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, darken, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { blue, red } from '@mui/material/colors';
+import { green, blue } from '@mui/material/colors';
 
 export default function PostAvatar({ p }) {
     const isPlace = p.type === 'places';
@@ -16,11 +16,13 @@ export default function PostAvatar({ p }) {
                 height: isPlace ? 42 : 50,
                 borderRadius: isPlace ? '50%' : 1,
                 gap: 0.5,
-                background: isPlace ? red[50] : blue[50],
-                color: isPlace ? red[500] : blue[500],
+                background: isPlace ? blue[50] : green[50],
+                color: isPlace
+                    ? darken(blue[500], 0.3)
+                    : darken(green[500], 0.3),
             }}>
             {p.type === 'places' ? (
-                <PlaceOutlined sx={{ color: red[500] }} />
+                <PlaceOutlined sx={{ color: blue[500] }} />
             ) : (
                 <React.Fragment>
                     <Typography fontWeight={500} variant="caption">

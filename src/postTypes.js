@@ -1,0 +1,151 @@
+import {
+    AutoStories,
+    Celebration,
+    Diversity3,
+    Explore,
+    Groups,
+    Handshake,
+    Landscape,
+    LocalMall,
+    LocalParking,
+    Loyalty,
+    Nightlife,
+    Restaurant,
+    SchoolRounded,
+    SportsBar,
+    SportsEsports,
+    SportsFootball,
+    TheaterComedy,
+    VolunteerActivism,
+    Wc,
+    Work,
+} from '@mui/icons-material';
+
+const postTypes = {
+    events: [
+        {
+            name: 'Campus Traditions',
+            url: 'traditions',
+            emoji: '🧨',
+            icon: Diversity3,
+        },
+        {
+            name: 'Career Events',
+            url: 'career',
+            emoji: '💼',
+            icon: Work,
+        },
+        {
+            name: 'Club Events',
+            url: 'club',
+            emoji: '🃏',
+            icon: Groups,
+        },
+        {
+            name: 'Meetups',
+            url: 'meetups',
+            emoji: '🤝🏽',
+            icon: Handshake,
+        },
+        {
+            name: 'Nightlife',
+            url: 'nightlife',
+            emoji: '🌃',
+            icon: Nightlife,
+        },
+        {
+            name: 'House Parties',
+            url: 'parties',
+            emoji: '🥳',
+            icon: Celebration,
+        },
+        {
+            name: 'Performances',
+            url: 'performances',
+            emoji: '🎭',
+            icon: TheaterComedy,
+        },
+        {
+            name: 'Pickup Games',
+            url: 'pickup-games',
+            emoji: '🏓',
+            icon: SportsEsports,
+        },
+        {
+            name: 'School Sports',
+            url: 'school-sports',
+            emoji: '🏈',
+            icon: SportsFootball,
+        },
+        {
+            name: 'Volunteering',
+            url: 'volunteering',
+            emoji: '🫶🏾',
+            icon: VolunteerActivism,
+        },
+        {
+            name: 'University Events',
+            url: 'university-events',
+            emoji: '🎓',
+            icon: SchoolRounded,
+        },
+    ],
+    places: [
+        {
+            name: 'Bathrooms',
+            url: 'bathrooms',
+            emoji: '🚽',
+            icon: Wc,
+        },
+        {
+            name: 'Cool Places',
+            url: 'cool',
+            emoji: '🛕',
+            icon: Explore,
+        },
+        {
+            name: 'Date Spots',
+            url: 'date-spots',
+            emoji: '👫',
+            icon: Loyalty,
+        },
+        {
+            name: 'Hangout Spots',
+            url: 'hangout',
+            emoji: '🍻',
+            icon: SportsBar,
+        },
+        {
+            name: 'Outdoor & Nature',
+            url: 'nature',
+            emoji: '🌴',
+            icon: Landscape,
+        },
+        {
+            name: 'Parking',
+            url: 'parking',
+            emoji: '🅿️',
+            icon: LocalParking,
+        },
+        {
+            name: 'Restaurants & Cafes',
+            url: 'restaurants',
+            emoji: '🍽️',
+            icon: Restaurant,
+        },
+        {
+            name: 'Shops',
+            url: 'shops',
+            emoji: '🛍️',
+            icon: LocalMall,
+        },
+        {
+            name: 'Study Spots',
+            url: 'study',
+            emoji: '👩‍💻',
+            icon: AutoStories,
+        },
+    ],
+};
+
+export default postTypes;

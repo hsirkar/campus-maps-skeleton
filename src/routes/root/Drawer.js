@@ -20,8 +20,7 @@ import Scrollbars from 'react-custom-scrollbars';
 
 import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 
-import postTypes from '../../postTypes.json';
-import { parse } from 'twemoji-parser';
+import postTypes from '../../postTypes';
 
 const { events, places } = postTypes;
 
@@ -49,13 +48,7 @@ export const drawerItems = [
     ...events.map(e => ({
         text: e.name,
         to: '/explore/' + e.url,
-        icon: (
-            <img
-                alt=""
-                style={{ width: '1em', height: '1em' }}
-                src={parse(e.emoji)[0].url}
-            />
-        ),
+        icon: <e.icon sx={{ color: 'text.secondary' }} />,
         indent: true,
     })),
     {
@@ -66,13 +59,7 @@ export const drawerItems = [
     ...places.map(p => ({
         text: p.name,
         to: '/explore/' + p.url,
-        icon: (
-            <img
-                alt=""
-                style={{ width: '1em', height: '1em' }}
-                src={parse(p.emoji)[0].url}
-            />
-        ),
+        icon: <p.icon sx={{ color: 'text.secondary' }} />,
         indent: true,
     })),
 ];

@@ -37,6 +37,7 @@ import {
     useParams,
 } from 'react-router-dom';
 import TypeChip from '../../common/Chip';
+import Pin from '../../common/Pin';
 import PostAvatar from '../../common/PostAvatar';
 import { db } from '../../firebase';
 
@@ -84,6 +85,7 @@ export default function PostDetail() {
                     {post.subtype.map((s, i) => (
                         <TypeChip type={post.type} subtype={s} key={i} />
                     ))}
+                    <Pin post={post} />
                     <Divider sx={{ mt: 1 }} />
                     <Stack direction="row" spacing="1" mb={1} mt={1}>
                         <Button
