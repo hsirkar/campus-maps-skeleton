@@ -30,20 +30,19 @@ import { Stack } from '@mui/system';
 import dayjs from 'dayjs';
 import { doc, getDoc } from 'firebase/firestore/lite';
 import Scrollbars from 'react-custom-scrollbars';
-import {
-    useLoaderData,
-    useLocation,
-    useNavigate,
-    useParams,
-    useRouteLoaderData,
-} from 'react-router-dom';
+import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 
 import TypeChip from '../../common/Chip';
 import PostAvatar from '../../common/PostAvatar';
 import { db } from '../../firebase';
+import { cachedLoaderData } from './Root';
 
 export async function loader({ params }) {
-    let res = await getDoc(doc(db, 'sample', params.id));
+    const cachedPost = cachedLoaderData?.posts?.find(p => p.id === params.id);
+
+    if (cachedPost) return { post: cachedPost };
+
+    const res = await getDoc(doc(db, 'sample', params.id));
     const post = res.data();
     return { post };
 }
@@ -51,17 +50,18 @@ export async function loader({ params }) {
 export default function PostDetail() {
     const navigate = useNavigate();
     const { state } = useLocation();
-    const params = useParams();
-    const loaderData = useLoaderData();
-
-    const post =
-        useRouteLoaderData('root')?.posts?.find(p => p.id === params.id) ||
-        loaderData.post;
+    const { post } = useLoaderData();
 
     return (
         <Paper
             elevation={1}
-            sx={{ position: 'relative', width: 400, fontSize: '0.95em' }}>
+            sx={{
+                position: 'relative',
+                flexBasis: 400,
+                flexGrow: 0,
+                flexShrink: 0,
+                fontSize: '0.95em',
+            }}>
             <Scrollbars style={{ height: 'calc(100vh - 49px)' }} autoHide>
                 <CardHeader
                     avatar={<PostAvatar p={post} />}

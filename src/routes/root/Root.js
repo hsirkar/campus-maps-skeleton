@@ -16,7 +16,7 @@ import Drawer from './Drawer';
 import Map from './Map';
 import PostList from './PostList';
 
-let cachedLoaderData = { posts: [] };
+export let cachedLoaderData = { posts: [] };
 
 // Loads post list based on params
 export async function loader({ request, params }) {

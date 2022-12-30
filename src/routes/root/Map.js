@@ -1,44 +1,24 @@
 import * as React from 'react';
 
-import { Box } from '@mui/system';
-import { useRouteLoaderData } from 'react-router';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import ReactMapGL from 'react-map-gl';
 
-import Pin from '../../common/Pin';
-
-function range(min, max) {
-    return Math.random() * (max - min) + min;
-}
-
-function irange(min, max) {
-    return Math.round(range(min, max));
-}
+const MAPBOX_TOKEN =
+    'pk.eyJ1IjoicmFrcmlzaCIsImEiOiJjamptczYxOGMzc3dzM3BvbDB0andscXdwIn0.GY-HcAV_MakM6gwzSS17Fg';
 
 export default function Map() {
-    const { posts } = useRouteLoaderData('root');
-
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flex: 1,
-                bgcolor: 'grey.200',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundImage: 'url("/mapbox-placeholder.png")',
-                overflow: 'hidden',
-                position: 'relative',
-            }}>
-            {posts.map(post => (
-                <Pin
-                    key={post.id}
-                    post={post}
-                    sx={{
-                        position: 'absolute',
-                        bottom: irange(0, 1500),
-                        right: irange(0, 1500),
-                    }}
-                />
-            ))}
-        </Box>
+        <ReactMapGL
+            initialViewState={{
+                latitude: 38.9869,
+                longitude: -76.9426,
+                zoom: 15,
+            }}
+            minZoom={13}
+            maxZoom={18}
+            style={{ width: '100%', height: 'calc(100vh - 49px)' }}
+            mapStyle="mapbox://styles/mapbox/streets-v11"
+            mapboxAccessToken={MAPBOX_TOKEN}
+        />
     );
 }
