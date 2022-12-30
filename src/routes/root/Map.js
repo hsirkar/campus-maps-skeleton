@@ -27,7 +27,11 @@ export default function Map({ hovered, setHovered }) {
 
     React.useEffect(() => {
         if (!pathname.includes('/p/')) setContext(pathname);
-    }, [pathname]);
+
+        if (ref.current) ref.current.resize();
+
+        setHovered(null);
+    }, [pathname, setHovered]);
 
     // Generate pins based on Root's loader data
     const { posts } = useLoaderData();
