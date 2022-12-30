@@ -43,6 +43,13 @@ const FilterSelect = styled(Select)(({ theme }) => ({
 }));
 
 function PostListItem({ p, isHovered, isSelected, setHovered, linkState }) {
+    const formattedTime = React.useMemo(
+        () =>
+            dayjs.unix(p.eventTime.seconds).calendar(null, {
+                sameElse: 'M/D/YY [at] h:mm A',
+            }),
+        [p]
+    );
     return (
         <React.Fragment>
             <ListItem alignItems="flex-start" sx={{ p: 0 }}>
@@ -79,13 +86,7 @@ function PostListItem({ p, isHovered, isSelected, setHovered, linkState }) {
                                     />
                                 ))}
                                 <Typography>{p.nearest_location}</Typography>
-                                <Typography>
-                                    {dayjs
-                                        .unix(p.eventTime.seconds)
-                                        .calendar(null, {
-                                            sameElse: 'M/D/YY [at] h:mm A',
-                                        })}
-                                </Typography>
+                                <Typography>{formattedTime}</Typography>
                             </React.Fragment>
                         }
                     />
