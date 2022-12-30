@@ -66,7 +66,40 @@ export const drawerItems = [
 
 const dividers = [2, 3 + events.length];
 
-export default function Drawer() {
+function DrawerListItem({ item, selected }) {
+    return (
+        <ListItem dense disablePadding>
+            <ListItemButton
+                sx={{ ml: item.indent ? 2 : 0 }}
+                selected={selected}
+                component={ReactRouterLink}
+                to={item.to}
+                dense>
+                <ListItemAvatar sx={{ minWidth: 0, pr: 1.25 }}>
+                    <Avatar
+                        sx={{
+                            width: '1.5em',
+                            height: '1.5em',
+                            background: 'transparent',
+                        }}>
+                        {item.icon}
+                    </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                    primary={item.text}
+                    primaryTypographyProps={{
+                        fontWeight: selected ? 600 : 'inherit',
+                        color: selected ? 'inherit' : 'inherit',
+                    }}
+                />
+            </ListItemButton>
+        </ListItem>
+    );
+}
+
+const MemoizedDrawerListItem = React.memo(DrawerListItem);
+
+function Drawer() {
     const { pathname, state } = useLocation();
 
     function isSelected(item) {
@@ -87,37 +120,10 @@ export default function Drawer() {
                 <List sx={{ width: '100%' }}>
                     {drawerItems.map((item, i) => (
                         <React.Fragment key={i}>
-                            <ListItem dense disablePadding>
-                                <ListItemButton
-                                    sx={{ ml: item.indent ? 2 : 0 }}
-                                    selected={isSelected(item)}
-                                    component={ReactRouterLink}
-                                    to={item.to}
-                                    dense>
-                                    <ListItemAvatar
-                                        sx={{ minWidth: 0, pr: 1.25 }}>
-                                        <Avatar
-                                            sx={{
-                                                width: '1.5em',
-                                                height: '1.5em',
-                                                background: 'transparent',
-                                            }}>
-                                            {item.icon}
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary={item.text}
-                                        primaryTypographyProps={{
-                                            fontWeight: isSelected(item)
-                                                ? 600
-                                                : 'inherit',
-                                            color: isSelected(item)
-                                                ? 'inherit'
-                                                : 'inherit',
-                                        }}
-                                    />
-                                </ListItemButton>
-                            </ListItem>
+                            <MemoizedDrawerListItem
+                                item={item}
+                                selected={isSelected(item)}
+                            />
                             {dividers.includes(i) && <Divider sx={{ my: 1 }} />}
                         </React.Fragment>
                     ))}
@@ -126,3 +132,5 @@ export default function Drawer() {
         </Paper>
     );
 }
+
+export default React.memo(Drawer);

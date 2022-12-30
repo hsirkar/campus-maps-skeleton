@@ -7,7 +7,7 @@ import types from '../postTypes';
 
 const subtypes = types.events.concat(types.places);
 
-export default function Pin({
+function Pin({
     post,
     selected = false,
     highlighted = false,
@@ -72,3 +72,5 @@ export default function Pin({
         </Box>
     );
 }
+
+export default React.memo(Pin);

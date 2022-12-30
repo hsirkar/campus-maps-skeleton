@@ -47,7 +47,7 @@ export async function loader({ params }) {
     return { post };
 }
 
-export default function PostDetail() {
+function PostDetail() {
     const navigate = useNavigate();
     const { state } = useLocation();
     const { post } = useLoaderData();
@@ -178,3 +178,5 @@ export default function PostDetail() {
         </Paper>
     );
 }
+
+export default React.memo(PostDetail);

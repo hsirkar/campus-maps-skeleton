@@ -5,7 +5,7 @@ import { Avatar, Typography, darken } from '@mui/material';
 import { blue, green } from '@mui/material/colors';
 import dayjs from 'dayjs';
 
-export default function PostAvatar({ p }) {
+function PostAvatar({ p }) {
     const isPlace = p.type === 'places';
     const date = isPlace || dayjs.unix(p.eventTime.seconds);
 
@@ -40,3 +40,5 @@ export default function PostAvatar({ p }) {
         </Avatar>
     );
 }
+
+export default React.memo(PostAvatar);

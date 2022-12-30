@@ -7,7 +7,7 @@ import types from '../postTypes';
 
 const subtypes = types.events.concat(types.places);
 
-export default function TypeChip({ type, subtype, variant = 'light' }) {
+function TypeChip({ type, subtype, variant = 'light' }) {
     const { name, icon } = subtypes.find(item => item.url === subtype);
     const background = variant === 'light' ? 50 : 500;
     return (
@@ -32,3 +32,5 @@ export default function TypeChip({ type, subtype, variant = 'light' }) {
         />
     );
 }
+
+export default React.memo(TypeChip);

@@ -42,6 +42,63 @@ const FilterSelect = styled(Select)(({ theme }) => ({
     },
 }));
 
+function PostListItem({ p, isHovered, isSelected, setHovered, linkState }) {
+    return (
+        <React.Fragment>
+            <ListItem alignItems="flex-start" sx={{ p: 0 }}>
+                <ListItemButton
+                    selected={isSelected}
+                    alignItems="flex-start"
+                    component={ReactRouterLink}
+                    to={`/p/${p.id}`}
+                    state={linkState}
+                    sx={{ px: 3, py: 1 }}
+                    className={
+                        isHovered ? 'MuiListItemButton-root-hovered' : ''
+                    }
+                    onMouseEnter={() => setHovered(p.id)}
+                    onMouseLeave={() => isHovered && setHovered(null)}>
+                    <ListItemAvatar>
+                        <PostAvatar p={p} />
+                    </ListItemAvatar>
+                    <ListItemText
+                        primaryTypographyProps={{
+                            fontWeight: 600,
+                        }}
+                        secondaryTypographyProps={{
+                            component: 'div',
+                        }}
+                        primary={p.title}
+                        secondary={
+                            <React.Fragment>
+                                {p.subtype.map((s, i) => (
+                                    <TypeChip
+                                        type={p.type}
+                                        subtype={s}
+                                        key={i}
+                                    />
+                                ))}
+                                <Typography>{p.nearest_location}</Typography>
+                                <Typography>
+                                    {dayjs
+                                        .unix(p.eventTime.seconds)
+                                        .calendar(null, {
+                                            sameElse: 'M/D/YY [at] h:mm A',
+                                        })}
+                                </Typography>
+                            </React.Fragment>
+                        }
+                    />
+                    {/* <Typography>right side</Typography> */}
+                </ListItemButton>
+            </ListItem>
+            <Divider variant="inset" component="li" />
+        </React.Fragment>
+    );
+}
+
+const MemoizedPostListItem = React.memo(PostListItem);
+
 export default function PostList({ hovered, setHovered }) {
     // Get data from above loader
     const { posts } = useRouteLoaderData('root');
@@ -101,65 +158,14 @@ export default function PostList({ hovered, setHovered }) {
                             },
                     }}>
                     {posts.map((p, i) => (
-                        <React.Fragment key={i}>
-                            <ListItem alignItems="flex-start" sx={{ p: 0 }}>
-                                <ListItemButton
-                                    selected={p.id === id}
-                                    alignItems="flex-start"
-                                    component={ReactRouterLink}
-                                    to={`/p/${p.id}`}
-                                    state={{ context }}
-                                    sx={{ px: 3, py: 1 }}
-                                    className={
-                                        hovered === p.id
-                                            ? 'MuiListItemButton-root-hovered'
-                                            : ''
-                                    }
-                                    onMouseEnter={() => setHovered(p.id)}
-                                    onMouseLeave={() =>
-                                        hovered === p.id && setHovered(null)
-                                    }>
-                                    <ListItemAvatar>
-                                        <PostAvatar p={p} />
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primaryTypographyProps={{
-                                            fontWeight: 600,
-                                        }}
-                                        secondaryTypographyProps={{
-                                            component: 'div',
-                                        }}
-                                        primary={p.title}
-                                        secondary={
-                                            <React.Fragment>
-                                                {p.subtype.map((s, i) => (
-                                                    <TypeChip
-                                                        type={p.type}
-                                                        subtype={s}
-                                                        key={i}
-                                                    />
-                                                ))}
-                                                <Typography>
-                                                    {p.nearest_location}
-                                                </Typography>
-                                                <Typography>
-                                                    {dayjs
-                                                        .unix(
-                                                            p.eventTime.seconds
-                                                        )
-                                                        .calendar(null, {
-                                                            sameElse:
-                                                                'M/D/YY [at] h:mm A',
-                                                        })}
-                                                </Typography>
-                                            </React.Fragment>
-                                        }
-                                    />
-                                    {/* <Typography>right side</Typography> */}
-                                </ListItemButton>
-                            </ListItem>
-                            <Divider variant="inset" component="li" />
-                        </React.Fragment>
+                        <MemoizedPostListItem
+                            key={i}
+                            p={p}
+                            isSelected={p.id === id}
+                            isHovered={hovered === p.id}
+                            setHovered={setHovered}
+                            linkState={{ context }}
+                        />
                     ))}
                 </List>
             </Scrollbars>

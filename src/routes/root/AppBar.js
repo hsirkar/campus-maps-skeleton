@@ -16,7 +16,7 @@ import {
 import { useNavigation } from 'react-router';
 
 // See https://mui.com/material-ui/react-app-bar/#MenuAppBar.js
-export default function MenuAppBar() {
+function MenuAppBar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigation = useNavigation();
 
@@ -117,3 +117,5 @@ export default function MenuAppBar() {
         </AppBar>
     );
 }
+
+export default React.memo(MenuAppBar);
