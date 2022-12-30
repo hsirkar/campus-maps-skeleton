@@ -11,6 +11,7 @@ export default function Pin({
     post,
     selected = false,
     highlighted = false,
+    onMouseOver = () => {},
     ...rest
 }) {
     const icon = subtypes.find(item => item.url === post.subtype[0]).icon;
@@ -54,6 +55,7 @@ export default function Pin({
                     borderStyle: 'solid',
                     borderColor: border,
                 }}
+                onMouseOver={onMouseOver}
             />
             {React.createElement(icon, {
                 sx: {

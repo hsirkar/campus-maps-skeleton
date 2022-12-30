@@ -56,6 +56,7 @@ export async function loader({ request, params }) {
 
 export default function Root() {
     const { pathname, state } = useLocation();
+    const [hovered, setHovered] = React.useState();
     const showPostList = !pathname.includes('/p/') || !!state?.context;
 
     return (
@@ -63,9 +64,11 @@ export default function Root() {
             <AppBar />
             <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 49px)' }}>
                 <Drawer />
-                {showPostList && <PostList />}
+                {showPostList && (
+                    <PostList hovered={hovered} setHovered={setHovered} />
+                )}
                 <Outlet />
-                <Map />
+                <Map hovered={hovered} setHovered={setHovered} />
             </Box>
         </React.Fragment>
     );

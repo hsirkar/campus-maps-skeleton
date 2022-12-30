@@ -42,7 +42,7 @@ const FilterSelect = styled(Select)(({ theme }) => ({
     },
 }));
 
-export default function PostList() {
+export default function PostList({ hovered, setHovered }) {
     // Get data from above loader
     const { posts } = useRouteLoaderData('root');
     const { id } = useParams();
@@ -95,9 +95,10 @@ export default function PostList() {
                         width: '100%',
                         bgcolor: 'background.paper',
                         // hover states
-                        '& .MuiListItemButton-root:hover': {
-                            bgcolor: '#ebf8ff',
-                        },
+                        '& .MuiListItemButton-root:hover, .MuiListItemButton-root-hovered':
+                            {
+                                bgcolor: '#ebf8ff',
+                            },
                     }}>
                     {posts.map((p, i) => (
                         <React.Fragment key={i}>
@@ -108,7 +109,16 @@ export default function PostList() {
                                     component={ReactRouterLink}
                                     to={`/p/${p.id}`}
                                     state={{ context }}
-                                    sx={{ px: 3, py: 1 }}>
+                                    sx={{ px: 3, py: 1 }}
+                                    className={
+                                        hovered === p.id
+                                            ? 'MuiListItemButton-root-hovered'
+                                            : ''
+                                    }
+                                    onMouseEnter={() => setHovered(p.id)}
+                                    onMouseLeave={() =>
+                                        hovered === p.id && setHovered(null)
+                                    }>
                                     <ListItemAvatar>
                                         <PostAvatar p={p} />
                                     </ListItemAvatar>

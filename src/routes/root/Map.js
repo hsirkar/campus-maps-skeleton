@@ -15,11 +15,19 @@ import Pin from '../../common/Pin.js';
 const MAPBOX_TOKEN =
     'pk.eyJ1IjoicmFrcmlzaCIsImEiOiJjamptczYxOGMzc3dzM3BvbDB0andscXdwIn0.GY-HcAV_MakM6gwzSS17Fg';
 
-export default function Map() {
+export default function Map({ hovered, setHovered }) {
     const ref = React.useRef();
     const params = useParams();
-    const { state } = useLocation();
     const navigate = useNavigate();
+
+    // Save context
+    // TODO: move this to root or context
+    const [context, setContext] = React.useState();
+    const { pathname } = useLocation();
+
+    React.useEffect(() => {
+        if (!pathname.includes('/p/')) setContext(pathname);
+    }, [pathname]);
 
     // Generate pins based on Root's loader data
     const { posts } = useLoaderData();
@@ -36,12 +44,20 @@ export default function Map() {
                     onClick={e => {
                         e.originalEvent.preventDefault();
                         e.originalEvent.stopPropagation();
-                        navigate('/p/' + post.id, { state: state });
+                        navigate('/p/' + post.id, { state: { context } });
                     }}>
-                    <Pin post={post} selected={params.id === post.id} />
+                    <Pin
+                        post={post}
+                        selected={params.id === post.id}
+                        highlighted={hovered === post.id}
+                        onMouseEnter={() => setHovered(post.id)}
+                        onMouseLeave={() =>
+                            hovered === post.id && setHovered(null)
+                        }
+                    />
                 </Marker>
             )),
-        [posts, params.id, navigate, state]
+        [posts, params.id, navigate, hovered, context, setHovered]
     );
 
     // TODO: generate pin if no root data
