@@ -34,6 +34,7 @@ const router = createBrowserRouter(
                     element={<React.Fragment />}
                 />
                 <Route
+                    id="p"
                     loader={postDetailLoader}
                     path="p/:id"
                     element={<PostDetail />}
