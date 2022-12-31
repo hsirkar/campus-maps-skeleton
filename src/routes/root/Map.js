@@ -44,7 +44,10 @@ export default function Map({ hovered, setHovered }) {
                     longitude={post.loc._long}
                     latitude={post.loc._lat}
                     anchor="top"
-                    style={{ cursor: 'pointer' }}
+                    style={{
+                        cursor: 'pointer',
+                        zIndex: hovered === post.id ? 10 : 9,
+                    }}
                     onClick={e => {
                         e.originalEvent.preventDefault();
                         e.originalEvent.stopPropagation();

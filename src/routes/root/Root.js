@@ -8,7 +8,7 @@ import {
     query,
     where,
 } from 'firebase/firestore/lite';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLoaderData, useLocation } from 'react-router-dom';
 
 import { db } from '../../firebase';
 import AppBar from './AppBar';
@@ -56,8 +56,11 @@ export async function loader({ request, params }) {
 
 export default function Root() {
     const { pathname, state } = useLocation();
+    const { posts } = useLoaderData();
+
     const [hovered, setHovered] = React.useState();
-    const showPostList = !pathname.includes('/p/') || !!state?.context;
+    const showPostList =
+        !pathname.includes('/p/') || (state?.context && !!posts.length);
 
     return (
         <React.Fragment>
