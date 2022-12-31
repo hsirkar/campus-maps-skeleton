@@ -42,14 +42,48 @@ const FilterSelect = styled(Select)(({ theme }) => ({
     },
 }));
 
-function PostListItem({ p, isHovered, isSelected, setHovered, linkState }) {
-    const formattedTime = React.useMemo(
-        () =>
-            dayjs.unix(p.eventTime.seconds).calendar(null, {
-                sameElse: 'M/D/YY [at] h:mm A',
-            }),
+export function PostListItem({
+    p,
+    isHovered,
+    isSelected,
+    setHovered,
+    linkState,
+}) {
+    const content = React.useMemo(
+        () => (
+            <React.Fragment>
+                <ListItemAvatar>
+                    <PostAvatar p={p} />
+                </ListItemAvatar>
+                <ListItemText
+                    primaryTypographyProps={{
+                        fontWeight: 600,
+                    }}
+                    secondaryTypographyProps={{
+                        component: 'div',
+                    }}
+                    primary={p.title}
+                    secondary={
+                        <React.Fragment>
+                            {p.subtype.map((s, i) => (
+                                <TypeChip type={p.type} subtype={s} key={i} />
+                            ))}
+                            <Typography>{p.nearest_location}</Typography>
+                            <Typography>
+                                {dayjs
+                                    .unix(p.eventTime.seconds)
+                                    .calendar(null, {
+                                        sameElse: 'M/D/YY [at] h:mm A',
+                                    })}
+                            </Typography>
+                        </React.Fragment>
+                    }
+                />
+            </React.Fragment>
+        ),
         [p]
     );
+
     return (
         <React.Fragment>
             <ListItem alignItems="flex-start" sx={{ p: 0 }}>
@@ -65,32 +99,7 @@ function PostListItem({ p, isHovered, isSelected, setHovered, linkState }) {
                     }
                     onMouseEnter={() => setHovered(p.id)}
                     onMouseLeave={() => isHovered && setHovered(null)}>
-                    <ListItemAvatar>
-                        <PostAvatar p={p} />
-                    </ListItemAvatar>
-                    <ListItemText
-                        primaryTypographyProps={{
-                            fontWeight: 600,
-                        }}
-                        secondaryTypographyProps={{
-                            component: 'div',
-                        }}
-                        primary={p.title}
-                        secondary={
-                            <React.Fragment>
-                                {p.subtype.map((s, i) => (
-                                    <TypeChip
-                                        type={p.type}
-                                        subtype={s}
-                                        key={i}
-                                    />
-                                ))}
-                                <Typography>{p.nearest_location}</Typography>
-                                <Typography>{formattedTime}</Typography>
-                            </React.Fragment>
-                        }
-                    />
-                    {/* <Typography>right side</Typography> */}
+                    {content}
                 </ListItemButton>
             </ListItem>
             <Divider variant="inset" component="li" />

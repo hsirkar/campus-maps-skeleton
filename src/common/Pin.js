@@ -4,6 +4,7 @@ import { Box, darken } from '@mui/material';
 import { blue, green, grey } from '@mui/material/colors';
 
 import types from '../postTypes';
+import Popup from '../routes/root/Popup';
 
 const subtypes = types.events.concat(types.places);
 
@@ -35,17 +36,35 @@ function Pin({
         }
     }
 
+    const memoizedIcon = React.useMemo(
+        () =>
+            React.createElement(icon, {
+                sx: {
+                    fontSize: '1.6em',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    margin: 'auto',
+                    color: 'white',
+                },
+            }),
+        [icon]
+    );
+
     return (
         <Box
             sx={{
                 position: 'relative',
                 m: 1,
+                zIndex: highlighted ? 5 : 1,
             }}
             {...rest}>
             <Box
                 sx={{
-                    width: 30,
-                    height: 30,
+                    width: 26,
+                    height: 26,
                     borderRadius: '50% 50% 50% 0',
                     background: background,
                     transform: 'rotate(-45deg)',
@@ -57,18 +76,8 @@ function Pin({
                 }}
                 onMouseOver={onMouseOver}
             />
-            {React.createElement(icon, {
-                sx: {
-                    fontSize: '1.4em',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    margin: 'auto',
-                    color: 'white',
-                },
-            })}
+            {memoizedIcon}
+            {highlighted && <Popup p={post} />}
         </Box>
     );
 }
