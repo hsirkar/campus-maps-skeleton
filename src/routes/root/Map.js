@@ -15,7 +15,7 @@ import Pin from '../../common/Pin.js';
 const MAPBOX_TOKEN =
     'pk.eyJ1IjoicmFrcmlzaCIsImEiOiJjamptczYxOGMzc3dzM3BvbDB0andscXdwIn0.GY-HcAV_MakM6gwzSS17Fg';
 
-export default function Map({ hovered, setHovered }) {
+export default function Map({ hovered, setHovered, sidebarOpen }) {
     const ref = React.useRef();
     const params = useParams();
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ export default function Map({ hovered, setHovered }) {
         if (ref.current) ref.current.resize();
 
         setHovered(null);
-    }, [pathname, setHovered]);
+    }, [pathname, setHovered, sidebarOpen]);
 
     // Generate pins based on Root's loader data
     const { posts } = useLoaderData();

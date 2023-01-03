@@ -118,6 +118,7 @@ export default function NavRail() {
                         }}>
                         {railItems.map(item => (
                             <MemoizedListItem
+                                key={item.text}
                                 item={item}
                                 selected={isSelected(item)}
                             />

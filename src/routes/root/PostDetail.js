@@ -61,6 +61,7 @@ function PostDetail() {
                 flexGrow: 0,
                 flexShrink: 0,
                 fontSize: '0.95em',
+                zIndex: 5,
             }}>
             <Scrollbars style={{ height: 'calc(100vh - 49px)' }} autoHide>
                 <CardHeader

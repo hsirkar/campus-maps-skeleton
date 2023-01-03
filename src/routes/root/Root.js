@@ -62,16 +62,27 @@ export default function Root() {
     const showSidebar =
         !pathname.includes('/p/') || (state?.context && !!posts.length);
 
+    const [sidebarOpen, setSidebarOpen] = React.useState(true);
+
     return (
         <React.Fragment>
             <AppBar />
             <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 49px)' }}>
                 <NavRail />
                 {showSidebar && (
-                    <Sidebar hovered={hovered} setHovered={setHovered} />
+                    <Sidebar
+                        hovered={hovered}
+                        setHovered={setHovered}
+                        sidebarOpen={sidebarOpen}
+                        setSidebarOpen={setSidebarOpen}
+                    />
                 )}
                 <Outlet />
-                <Map hovered={hovered} setHovered={setHovered} />
+                <Map
+                    hovered={hovered}
+                    setHovered={setHovered}
+                    sidebarOpen={sidebarOpen}
+                />
             </Box>
         </React.Fragment>
     );

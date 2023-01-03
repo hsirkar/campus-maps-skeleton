@@ -122,7 +122,11 @@ export function CustomizedInputBase() {
                                 Explore Events
                             </Typography>
                             {types.events.map(e => (
-                                <Chip type="events" subtype={e.url} />
+                                <Chip
+                                    key={e.url}
+                                    type="events"
+                                    subtype={e.url}
+                                />
                             ))}
                         </Grid>
                         <Grid item xs={6}>
@@ -130,7 +134,11 @@ export function CustomizedInputBase() {
                                 Explore Places
                             </Typography>
                             {types.places.map(p => (
-                                <Chip type="places" subtype={p.url} />
+                                <Chip
+                                    key={p.url}
+                                    type="places"
+                                    subtype={p.url}
+                                />
                             ))}
                         </Grid>
                     </Grid>
