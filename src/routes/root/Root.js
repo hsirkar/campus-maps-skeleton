@@ -12,9 +12,9 @@ import { Outlet, useLoaderData, useLocation } from 'react-router-dom';
 
 import { db } from '../../firebase';
 import AppBar from './AppBar';
-import Drawer from './Drawer';
 import Map from './Map';
-import PostList from './PostList';
+import NavRail from './NavRail';
+import Sidebar from './sidebar/Sidebar';
 
 export let cachedLoaderData = { posts: [] };
 
@@ -59,16 +59,16 @@ export default function Root() {
     const { posts } = useLoaderData();
 
     const [hovered, setHovered] = React.useState();
-    const showPostList =
+    const showSidebar =
         !pathname.includes('/p/') || (state?.context && !!posts.length);
 
     return (
         <React.Fragment>
             <AppBar />
             <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 49px)' }}>
-                <Drawer />
-                {showPostList && (
-                    <PostList hovered={hovered} setHovered={setHovered} />
+                <NavRail />
+                {showSidebar && (
+                    <Sidebar hovered={hovered} setHovered={setHovered} />
                 )}
                 <Outlet />
                 <Map hovered={hovered} setHovered={setHovered} />

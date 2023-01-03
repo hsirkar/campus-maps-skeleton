@@ -1,0 +1,130 @@
+import React from 'react';
+
+import {
+    Favorite,
+    FavoriteBorder,
+    Help,
+    HelpOutline,
+    HomeOutlined,
+    HomeRounded,
+    People,
+    PeopleOutlined,
+    Settings,
+    SettingsOutlined,
+} from '@mui/icons-material';
+import { List, ListItemButton, Paper, Typography } from '@mui/material';
+import dayjs from 'dayjs';
+import calendar from 'dayjs/plugin/calendar';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import Scrollbars from 'react-custom-scrollbars';
+import { useLocation } from 'react-router';
+import { Link } from 'react-router-dom';
+
+dayjs.extend(calendar);
+dayjs.extend(relativeTime);
+
+const railItems = [
+    {
+        text: 'Home',
+        to: '/',
+        icon: HomeOutlined,
+        selectedIcon: HomeRounded,
+    },
+    {
+        text: 'Following',
+        to: '/following',
+        icon: PeopleOutlined,
+        selectedIcon: People,
+    },
+    {
+        text: 'Liked',
+        to: '/liked',
+        icon: FavoriteBorder,
+        selectedIcon: Favorite,
+    },
+    {
+        text: 'Settings',
+        to: '/settings',
+        icon: SettingsOutlined,
+        selectedIcon: Settings,
+    },
+    {
+        text: 'Help & Feedback',
+        to: '/help-feedback',
+        icon: HelpOutline,
+        selectedIcon: Help,
+    },
+];
+
+function ListItem({ item, selected }) {
+    return (
+        <ListItemButton
+            component={Link}
+            to={item.to}
+            selected={selected}
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                py: 2,
+                color: selected ? 'text.primary' : 'text.secondary',
+            }}>
+            {selected
+                ? React.createElement(item.selectedIcon)
+                : React.createElement(item.icon)}
+            <Typography
+                lineHeight="1.2"
+                mt={0.75}
+                textAlign="center"
+                fontSize="0.85em"
+                fontWeight={500}>
+                {item.text}
+            </Typography>
+        </ListItemButton>
+    );
+}
+
+const MemoizedListItem = React.memo(ListItem);
+
+export default function NavRail() {
+    const { pathname, state } = useLocation();
+
+    function isSelected(item) {
+        return pathname === item.to || state?.context === item.to;
+    }
+
+    return (
+        <React.Fragment>
+            <Paper
+                elevation={1}
+                sx={{
+                    position: 'relative',
+                    flexBasis: 75,
+                    flexGrow: 0,
+                    flexShrink: 0,
+                    fontSize: '0.95em',
+                    zIndex: 5,
+                }}>
+                <Scrollbars style={{ height: 'calc(100vh - 49px)' }} autoHide>
+                    <List
+                        sx={{
+                            width: '100%',
+                            bgcolor: 'background.paper',
+                            '& .MuiListItemButton-root:hover, .MuiListItemButton-root-hovered':
+                                {
+                                    bgcolor: '#ebf8ff',
+                                },
+                        }}>
+                        {railItems.map(item => (
+                            <MemoizedListItem
+                                item={item}
+                                selected={isSelected(item)}
+                            />
+                        ))}
+                    </List>
+                </Scrollbars>
+            </Paper>
+        </React.Fragment>
+    );
+}

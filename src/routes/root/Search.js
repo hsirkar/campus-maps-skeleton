@@ -2,23 +2,16 @@ import React from 'react';
 
 import {
     Divider,
-    FormControl,
-    Input,
     List,
     ListItem,
     ListItemAvatar,
     ListItemButton,
     ListItemText,
-    MenuItem,
-    Paper,
-    Select,
     Typography,
-    styled,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import Scrollbars from 'react-custom-scrollbars';
 import {
     Link as ReactRouterLink,
     useLocation,
@@ -31,16 +24,6 @@ import PostAvatar from '../../common/PostAvatar';
 
 dayjs.extend(calendar);
 dayjs.extend(relativeTime);
-
-const FilterSelect = styled(Select)(({ theme }) => ({
-    borderRadius: 2,
-    fontSize: '0.9em',
-    fontWeight: 600,
-    color: theme.palette.primary.main,
-    '.MuiSvgIcon-root ': {
-        color: theme.palette.primary.main,
-    },
-}));
 
 export function PostListItem({
     p,
@@ -109,15 +92,10 @@ export function PostListItem({
 
 const MemoizedPostListItem = React.memo(PostListItem);
 
-export default function PostList({ hovered, setHovered }) {
+export default function Search({ hovered, setHovered }) {
     // Get data from above loader
     const { posts } = useRouteLoaderData('root');
     const { id } = useParams();
-
-    const [sortBy, setSortBy] = React.useState(0);
-    const handleSortChange = event => {
-        setSortBy(event.target.value);
-    };
 
     // Save context
     const [context, setContext] = React.useState();
@@ -128,57 +106,26 @@ export default function PostList({ hovered, setHovered }) {
     }, [pathname]);
 
     return (
-        <Paper
-            elevation={1}
+        <List
             sx={{
-                position: 'relative',
-                flexBasis: 350,
-                flexGrow: 0,
-                flexShrink: 0,
-                fontSize: '0.95em',
+                width: '100%',
+                bgcolor: 'background.paper',
+                // hover states
+                '& .MuiListItemButton-root:hover, .MuiListItemButton-root-hovered':
+                    {
+                        bgcolor: '#ebf8ff',
+                    },
             }}>
-            <Scrollbars style={{ height: 'calc(100vh - 49px)' }} autoHide>
-                <FormControl
-                    sx={{
-                        width: '100%',
-                        overflow: 'hidden',
-                        px: 2.5,
-                        pt: 2,
-                        pb: 0.5,
-                    }}
-                    size="small">
-                    <FilterSelect
-                        MenuProps={{ elevation: 1 }}
-                        value={sortBy}
-                        onChange={handleSortChange}
-                        input={<Input disableUnderline />}>
-                        <MenuItem value={0}>By popularity</MenuItem>
-                        <MenuItem value={1}>By date</MenuItem>
-                    </FilterSelect>
-                </FormControl>
-
-                <List
-                    sx={{
-                        width: '100%',
-                        bgcolor: 'background.paper',
-                        // hover states
-                        '& .MuiListItemButton-root:hover, .MuiListItemButton-root-hovered':
-                            {
-                                bgcolor: '#ebf8ff',
-                            },
-                    }}>
-                    {posts.map((p, i) => (
-                        <MemoizedPostListItem
-                            key={i}
-                            p={p}
-                            isSelected={p.id === id}
-                            isHovered={hovered === p.id}
-                            setHovered={setHovered}
-                            linkState={{ context }}
-                        />
-                    ))}
-                </List>
-            </Scrollbars>
-        </Paper>
+            {posts.map((p, i) => (
+                <MemoizedPostListItem
+                    key={i}
+                    p={p}
+                    isSelected={p.id === id}
+                    isHovered={hovered === p.id}
+                    setHovered={setHovered}
+                    linkState={{ context }}
+                />
+            ))}
+        </List>
     );
 }
