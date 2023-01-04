@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Chip, darken } from '@mui/material';
 import { blue, green } from '@mui/material/colors';
+import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
 
 import types from '../postTypes';
 
@@ -10,8 +11,17 @@ const subtypes = types.events.concat(types.places);
 function TypeChip({ type, subtype, variant = 'light' }) {
     const { name, icon } = subtypes.find(item => item.url === subtype);
     const background = variant === 'light' ? 50 : 500;
+    const navigate = useNavigate();
     return (
         <Chip
+            component={ReactRouterLink}
+            to={`/explore/${type}/${subtype}`}
+            onClick={e => {
+                e.preventDefault();
+                e.stopPropagation();
+                navigate(`/explore/${type}/${subtype}`);
+            }}
+            onMouseDown={e => e.stopPropagation()}
             sx={{
                 mt: 0.5,
                 mb: 0.5,
