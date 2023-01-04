@@ -94,7 +94,7 @@ export default function Root() {
     return (
         <React.Fragment>
             <AppBar />
-            <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 49px)' }}>
+            <Box sx={{ position: 'relative', display: 'flex', minHeight: 'calc(100vh - 49px)' }}>
                 <NavRail />
                 {showSidebar && (
                     <Sidebar
@@ -105,12 +105,12 @@ export default function Root() {
                         {sidebarContent}
                     </Sidebar>
                 )}
-                <Outlet />
                 <Map
                     hovered={hovered}
                     setHovered={setHovered}
                     sidebarOpen={sidebarOpen}
                 />
+                <Outlet />
             </Box>
         </React.Fragment>
     );

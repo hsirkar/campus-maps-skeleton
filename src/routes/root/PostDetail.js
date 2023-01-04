@@ -47,6 +47,8 @@ export async function loader({ params }) {
     return { post };
 }
 
+const height = 'calc(100vh - 49px - 50px)';
+
 function PostDetail() {
     const navigate = useNavigate();
     const { state } = useLocation();
@@ -56,14 +58,15 @@ function PostDetail() {
         <Paper
             elevation={1}
             sx={{
-                position: 'relative',
-                flexBasis: 400,
-                flexGrow: 0,
-                flexShrink: 0,
-                fontSize: '0.95em',
-                zIndex: 5,
+                position: 'absolute',
+                width: 350,
+                height: height,
+                zIndex: 10,
+                borderRadius: 5,
+                right: theme => theme.spacing(2),
+                top: theme => theme.spacing(2)
             }}>
-            <Scrollbars style={{ height: 'calc(100vh - 49px)' }} autoHide>
+            <Scrollbars style={{ height: height }} autoHide>
                 <CardHeader
                     avatar={<PostAvatar p={post} />}
                     action={

@@ -78,6 +78,7 @@ export default function Map({ hovered, setHovered, sidebarOpen }) {
                 lon: routeLoaderData.post.loc._long,
                 lat: routeLoaderData.post.loc._lat,
             },
+            offset: [-350/2, 0]
         });
     }, [params.id, routeLoaderData]);
 
