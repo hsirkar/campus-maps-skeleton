@@ -40,7 +40,7 @@ function Pin({
         () =>
             React.createElement(icon, {
                 sx: {
-                    fontSize: '1.6em',
+                    fontSize: '1.4em',
                     position: 'absolute',
                     top: 0,
                     left: 0,
@@ -63,8 +63,8 @@ function Pin({
             {...rest}>
             <Box
                 sx={{
-                    width: 26,
-                    height: 26,
+                    width: 24,
+                    height: 24,
                     borderRadius: '50% 50% 50% 0',
                     background: background,
                     transform: 'rotate(-45deg)',
