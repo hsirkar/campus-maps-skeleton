@@ -68,7 +68,7 @@ function PostDetail() {
                     avatar={<PostAvatar p={post} />}
                     action={
                         <IconButton
-                            onClick={() => navigate(state?.context || '/')}
+                            onClick={() => navigate(state?.context || '/home')}
                             aria-label="settings">
                             <Close />
                         </IconButton>

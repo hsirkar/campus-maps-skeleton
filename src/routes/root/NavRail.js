@@ -26,7 +26,7 @@ dayjs.extend(relativeTime);
 const railItems = [
     {
         text: 'Home',
-        to: '/',
+        to: '/home',
         icon: HomeOutlined,
         selectedIcon: HomeRounded,
     },

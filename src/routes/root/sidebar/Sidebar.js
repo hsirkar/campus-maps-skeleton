@@ -2,9 +2,6 @@ import React from 'react';
 
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Card, Paper, Tooltip } from '@mui/material';
-import Scrollbars from 'react-custom-scrollbars';
-
-import Search from '../Search';
 
 function CollapseButton({ open, setOpen }) {
     return (
@@ -35,18 +32,13 @@ function CollapseButton({ open, setOpen }) {
 
 const MemoizedCollapseButton = React.memo(CollapseButton);
 
-export default function Sidebar({
-    hovered,
-    setHovered,
-    sidebarOpen,
-    setSidebarOpen,
-}) {
+export default function Sidebar({ sidebarOpen, setSidebarOpen, children }) {
     return (
         <Paper
             elevation={1}
             sx={{
                 position: 'relative',
-                flexBasis: sidebarOpen ? 350 : 0,
+                flexBasis: 'auto',
                 flexGrow: 0,
                 flexShrink: 0,
                 fontSize: '0.95em',
@@ -56,11 +48,7 @@ export default function Sidebar({
                 open={sidebarOpen}
                 setOpen={setSidebarOpen}
             />
-            {sidebarOpen && (
-                <Scrollbars style={{ height: 'calc(100vh - 49px)' }} autoHide>
-                    <Search hovered={hovered} setHovered={setHovered} />
-                </Scrollbars>
-            )}
+            {sidebarOpen && <React.Fragment>{children}</React.Fragment>}
         </Paper>
     );
 }

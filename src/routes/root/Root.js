@@ -8,61 +8,88 @@ import {
     query,
     where,
 } from 'firebase/firestore/lite';
-import { Outlet, useLoaderData, useLocation } from 'react-router-dom';
+import {
+    Outlet,
+    useLoaderData,
+    useLocation,
+    useParams,
+} from 'react-router-dom';
 
 import { db } from '../../firebase';
 import AppBar from './AppBar';
 import Map from './Map';
 import NavRail from './NavRail';
+import Home from './sidebar/Home';
+import Search from './sidebar/Search';
 import Sidebar from './sidebar/Sidebar';
 
 export let cachedLoaderData = { posts: [] };
 
-// Loads post list based on params
-export async function loader({ request, params }) {
-    // Page details - don't load anything
-    if (request.url.includes('/p/')) {
-        return cachedLoaderData;
-    }
-
-    // Create a reference to the sample collection
-    const sampleRef = collection(db, 'sample');
-    let q;
-
-    // Create a query depending on url params
-    // Home page
-    if (!params.type && !params.id) {
-        q = query(sampleRef, limit(50));
-    }
-
-    // Explore
-    if (params.subtype) {
-        q = query(
-            sampleRef,
-            where('subtype', 'array-contains', params.subtype)
-        );
-    } else if (params.type) {
-        q = query(sampleRef, where('type', '==', params.type));
-    }
-
-    // Execute query
+async function loadHome() {
+    const col = collection(db, 'sample');
+    const q = query(col, limit(100));
     const res = await getDocs(q);
     const posts = res.docs.map(doc => doc.data());
-
-    // Cache and return
-    cachedLoaderData = { posts };
     return { posts };
 }
 
+async function loadFollowing() {
+    return { posts: [] };
+}
+
+async function loadSaved() {
+    return { posts: [] };
+}
+
+async function loadExplore({ params }) {
+    const col = collection(db, 'sample');
+    let q;
+    if (params.subtype) {
+        q = query(col, where('subtype', 'array-contains', params.subtype));
+    } else if (params.type) {
+        q = query(col, where('type', '==', params.type));
+    }
+
+    const res = await getDocs(q);
+    const posts = res.docs.map(doc => doc.data());
+    return { posts };
+}
+
+export async function loader({ request, params }) {
+    if (request.url.includes('/home'))
+        cachedLoaderData = loadHome({ request, params });
+
+    if (request.url.includes('/following'))
+        cachedLoaderData = loadFollowing({ request, params });
+
+    if (request.url.includes('/saved'))
+        cachedLoaderData = loadSaved({ request, params });
+
+    if (request.url.includes('/explore'))
+        cachedLoaderData = loadExplore({ request, params });
+
+    return cachedLoaderData;
+}
+
 export default function Root() {
+    const params = useParams();
     const { pathname, state } = useLocation();
     const { posts } = useLoaderData();
 
     const [hovered, setHovered] = React.useState();
-    const showSidebar =
-        !pathname.includes('/p/') || (state?.context && !!posts.length);
-
     const [sidebarOpen, setSidebarOpen] = React.useState(true);
+
+    let showSidebar = true;
+    if (params.id) {
+        showSidebar =
+            (state?.context?.includes('explore') ||
+                state?.context?.includes('search')) &&
+            posts.length;
+    }
+
+    let sidebarContent = <React.Fragment />;
+    if (pathname.includes('/home')) sidebarContent = <Home />;
+    else sidebarContent = <Search hovered={hovered} setHovered={setHovered} />;
 
     return (
         <React.Fragment>
@@ -74,8 +101,9 @@ export default function Root() {
                         hovered={hovered}
                         setHovered={setHovered}
                         sidebarOpen={sidebarOpen}
-                        setSidebarOpen={setSidebarOpen}
-                    />
+                        setSidebarOpen={setSidebarOpen}>
+                        {sidebarContent}
+                    </Sidebar>
                 )}
                 <Outlet />
                 <Map

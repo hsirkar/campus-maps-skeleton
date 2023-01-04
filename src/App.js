@@ -3,6 +3,7 @@ import React from 'react';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import {
+    Navigate,
     Route,
     RouterProvider,
     createBrowserRouter,
@@ -29,10 +30,12 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <React.Fragment>
             <Route id="root" loader={rootLoader} path="*" element={<Root />}>
+                <Route path="" element={<Navigate to="/home" />} />
                 <Route
                     path="explore/:type/:subtype?"
                     element={<React.Fragment />}
                 />
+                <Route path="search/:query" element={<React.Fragment />} />
                 <Route
                     id="p"
                     loader={postDetailLoader}
