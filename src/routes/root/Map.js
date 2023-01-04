@@ -15,7 +15,7 @@ import Pin from '../../common/Pin.js';
 const MAPBOX_TOKEN =
     'pk.eyJ1IjoicmFrcmlzaCIsImEiOiJjamptczYxOGMzc3dzM3BvbDB0andscXdwIn0.GY-HcAV_MakM6gwzSS17Fg';
 
-export default function Map({ hovered, setHovered, sidebarOpen }) {
+export default function Map({ hovered, setHovered, sidebarOpen, showSidebar }) {
     const ref = React.useRef();
     const params = useParams();
     const navigate = useNavigate();
@@ -78,7 +78,7 @@ export default function Map({ hovered, setHovered, sidebarOpen }) {
                 lon: routeLoaderData.post.loc._long,
                 lat: routeLoaderData.post.loc._lat,
             },
-            offset: [-350/2, 0]
+            offset: [-350 / 2, 0],
         });
     }, [params.id, routeLoaderData]);
 
@@ -91,7 +91,14 @@ export default function Map({ hovered, setHovered, sidebarOpen }) {
             }}
             minZoom={13}
             maxZoom={18}
-            style={{ width: '100%', height: 'calc(100vh - 49px)' }}
+            style={{
+                position: 'fixed',
+                zIndex: theme => theme.zIndex.map,
+                width: '100vw',
+                height: 'calc(100vh - 49px)',
+                transition: 'left 0.2s',
+                left: showSidebar && sidebarOpen ? 200 : 0,
+            }}
             mapStyle="mapbox://styles/mapbox/streets-v11"
             mapboxAccessToken={MAPBOX_TOKEN}
             ref={ref}>

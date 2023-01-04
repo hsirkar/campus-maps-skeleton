@@ -88,13 +88,26 @@ export default function Root() {
     }
 
     let sidebarContent = <React.Fragment />;
-    if (pathname.includes('/home')) sidebarContent = <Home />;
-    else sidebarContent = <Search hovered={hovered} setHovered={setHovered} />;
+    if (pathname.includes('/home'))
+        sidebarContent = <Home setSidebarOpen={setSidebarOpen} />;
+    else
+        sidebarContent = (
+            <Search
+                hovered={hovered}
+                setHovered={setHovered}
+                setSidebarOpen={setSidebarOpen}
+            />
+        );
 
     return (
         <React.Fragment>
             <AppBar />
-            <Box sx={{ position: 'relative', display: 'flex', minHeight: 'calc(100vh - 49px)' }}>
+            <Box
+                sx={{
+                    position: 'relative',
+                    display: 'flex',
+                    height: 'calc(100vh - 49px)',
+                }}>
                 <NavRail />
                 {showSidebar && (
                     <Sidebar
@@ -109,6 +122,7 @@ export default function Root() {
                     hovered={hovered}
                     setHovered={setHovered}
                     sidebarOpen={sidebarOpen}
+                    showSidebar={showSidebar}
                 />
                 <Outlet />
             </Box>

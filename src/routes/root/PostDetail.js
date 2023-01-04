@@ -64,7 +64,7 @@ function PostDetail() {
                 zIndex: 10,
                 borderRadius: 5,
                 right: theme => theme.spacing(2),
-                top: theme => theme.spacing(2)
+                top: theme => theme.spacing(2),
             }}>
             <Scrollbars style={{ height: height }} autoHide>
                 <CardHeader

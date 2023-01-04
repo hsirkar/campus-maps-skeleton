@@ -58,7 +58,10 @@ function Pin({
             sx={{
                 position: 'relative',
                 m: 1,
-                zIndex: highlighted ? 5 : 1,
+                zIndex: theme =>
+                    highlighted
+                        ? theme.zIndex.highlightedPin
+                        : theme.zIndex.pin,
             }}
             {...rest}>
             <Box

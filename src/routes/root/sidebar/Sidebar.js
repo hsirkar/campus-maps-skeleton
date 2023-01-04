@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { Card, Paper, Tooltip } from '@mui/material';
+import { Card, Collapse, Paper, Tooltip } from '@mui/material';
+import { Box } from '@mui/system';
 
 function CollapseButton({ open, setOpen }) {
     return (
@@ -22,6 +23,7 @@ function CollapseButton({ open, setOpen }) {
                     alignItems: 'center',
                     color: 'text.secondary',
                     cursor: 'pointer',
+                    zIndex: theme => theme.zIndex.sidebar + 1,
                 }}
                 onClick={() => setOpen(!open)}>
                 {open ? <ChevronLeft /> : <ChevronRight />}
@@ -34,21 +36,27 @@ const MemoizedCollapseButton = React.memo(CollapseButton);
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen, children }) {
     return (
-        <Paper
-            elevation={1}
-            sx={{
-                position: 'relative',
-                flexBasis: 'auto',
-                flexGrow: 0,
-                flexShrink: 0,
-                fontSize: '0.95em',
-                zIndex: 6,
-            }}>
+        <Box position="relative" zIndex={8}>
+            <Collapse
+                orientation="horizontal"
+                in={sidebarOpen}
+                unmountOnExit
+                mountOnEnter>
+                <Paper
+                    elevation={1}
+                    sx={{
+                        position: 'relative',
+                        fontSize: '0.95em',
+                        zIndex: theme => theme.zIndex.sidebar,
+                        transition: 'width 0.2s',
+                    }}>
+                    <React.Fragment>{children}</React.Fragment>
+                </Paper>
+            </Collapse>
             <MemoizedCollapseButton
                 open={sidebarOpen}
                 setOpen={setSidebarOpen}
             />
-            {sidebarOpen && <React.Fragment>{children}</React.Fragment>}
-        </Paper>
+        </Box>
     );
 }

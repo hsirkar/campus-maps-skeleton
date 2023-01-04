@@ -100,11 +100,10 @@ export default function NavRail() {
                 elevation={1}
                 sx={{
                     position: 'relative',
-                    flexBasis: 75,
-                    flexGrow: 0,
-                    flexShrink: 0,
+                    width: 75,
                     fontSize: '0.95em',
-                    zIndex: 5,
+                    zIndex: theme => theme.zIndex.navRail,
+                    height: 'calc(100vh - 49px)',
                 }}>
                 <Scrollbars style={{ height: 'calc(100vh - 49px)' }} autoHide>
                     <List
