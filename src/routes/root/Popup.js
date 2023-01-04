@@ -7,7 +7,6 @@ import {
     Paper,
     Typography,
 } from '@mui/material';
-import dayjs from 'dayjs';
 
 import TypeChip from '../../common/Chip';
 import PostAvatar from '../../common/PostAvatar';
@@ -34,13 +33,6 @@ export default function Popup({ p }) {
                                 <TypeChip type={p.type} subtype={s} key={i} />
                             ))}
                             <Typography>{p.nearest_location}</Typography>
-                            <Typography>
-                                {dayjs
-                                    .unix(p.eventTime.seconds)
-                                    .calendar(null, {
-                                        sameElse: 'M/D/YY [at] h:mm A',
-                                    })}
-                            </Typography>
                         </React.Fragment>
                     }
                 />

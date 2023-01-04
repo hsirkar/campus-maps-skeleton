@@ -12,6 +12,7 @@ import {
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Scrollbars from 'react-custom-scrollbars';
 import {
     Link as ReactRouterLink,
     useLocation,
@@ -19,8 +20,9 @@ import {
     useRouteLoaderData,
 } from 'react-router-dom';
 
-import TypeChip from '../../common/Chip';
-import PostAvatar from '../../common/PostAvatar';
+import TypeChip from '../../../common/Chip';
+import PostAvatar from '../../../common/PostAvatar';
+import types from '../../../postTypes';
 
 dayjs.extend(calendar);
 dayjs.extend(relativeTime);
@@ -52,13 +54,6 @@ export function PostListItem({
                                 <TypeChip type={p.type} subtype={s} key={i} />
                             ))}
                             <Typography>{p.nearest_location}</Typography>
-                            <Typography>
-                                {dayjs
-                                    .unix(p.eventTime.seconds)
-                                    .calendar(null, {
-                                        sameElse: 'M/D/YY [at] h:mm A',
-                                    })}
-                            </Typography>
                         </React.Fragment>
                     }
                 />
@@ -95,37 +90,56 @@ const MemoizedPostListItem = React.memo(PostListItem);
 export default function Search({ hovered, setHovered }) {
     // Get data from above loader
     const { posts } = useRouteLoaderData('root');
-    const { id } = useParams();
+    const { id, type, subtype } = useParams();
 
     // Save context
     const [context, setContext] = React.useState();
+    const [title, setTitle] = React.useState();
+
     const { pathname } = useLocation();
 
     React.useEffect(() => {
-        if (!pathname.includes('/p/')) setContext(pathname);
-    }, [pathname]);
+        if (!pathname.includes('/p/')) {
+            setContext(pathname);
+
+            let temp = type === 'events' ? 'Events' : 'Places';
+            if (subtype) {
+                temp = types[type].find(e => e.url === subtype).name;
+            }
+
+            setTitle(temp);
+        }
+    }, [pathname, subtype, type]);
 
     return (
-        <List
-            sx={{
-                width: '100%',
-                bgcolor: 'background.paper',
-                // hover states
-                '& .MuiListItemButton-root:hover, .MuiListItemButton-root-hovered':
-                    {
-                        bgcolor: '#ebf8ff',
-                    },
-            }}>
-            {posts.map((p, i) => (
-                <MemoizedPostListItem
-                    key={i}
-                    p={p}
-                    isSelected={p.id === id}
-                    isHovered={hovered === p.id}
-                    setHovered={setHovered}
-                    linkState={{ context }}
-                />
-            ))}
-        </List>
+        <Scrollbars
+            style={{ width: 350, height: 'calc(100vh - 49px)' }}
+            autoHide>
+            <Typography variant="h3" m={2} mb={0}>
+                {title || 'Search Results'}
+            </Typography>
+
+            <List
+                sx={{
+                    width: '100%',
+                    bgcolor: 'background.paper',
+                    // hover states
+                    '& .MuiListItemButton-root:hover, .MuiListItemButton-root-hovered':
+                        {
+                            bgcolor: '#ebf8ff',
+                        },
+                }}>
+                {posts.map((p, i) => (
+                    <MemoizedPostListItem
+                        key={i}
+                        p={p}
+                        isSelected={p.id === id}
+                        isHovered={hovered === p.id}
+                        setHovered={setHovered}
+                        linkState={{ context }}
+                    />
+                ))}
+            </List>
+        </Scrollbars>
     );
 }
