@@ -1,5 +1,11 @@
 const { initializeApp } = require('@firebase/app');
-const { getFirestore } = require('firebase/firestore/lite');
+const { getAuth, connectAuthEmulator } = require('@firebase/auth');
+const {
+    getFirestore,
+    connectFirestoreEmulator,
+} = require('firebase/firestore/lite');
+
+const useEmulator = true;
 
 // See https://firebase.google.com/docs/web/learn-more#config-object
 const firebaseConfig = {
@@ -14,7 +20,13 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
+
+if (useEmulator) {
+    connectAuthEmulator(auth, 'http://localhost:9099');
+    connectFirestoreEmulator(db, 'localhost', 8080);
+}
 
 function range(min, max) {
     return Math.random() * (max - min) + min;

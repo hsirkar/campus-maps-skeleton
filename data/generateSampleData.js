@@ -233,6 +233,9 @@ function generateSampleData(numUsers, numPosts) {
             followers: [],
             following: [],
             saved: [],
+            isStudent: true,
+            email: username + '@umd.edu',
+            campus: 'umd',
         });
     }
 

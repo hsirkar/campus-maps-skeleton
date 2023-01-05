@@ -1,6 +1,7 @@
 import { initializeApp } from '@firebase/app';
 import {
     browserLocalPersistence,
+    connectAuthEmulator,
     createUserWithEmailAndPassword,
     getAuth,
     inMemoryPersistence,
@@ -8,7 +9,14 @@ import {
     signInWithEmailAndPassword,
     signOut,
 } from 'firebase/auth';
-import { doc, getFirestore, setDoc } from 'firebase/firestore/lite';
+import {
+    connectFirestoreEmulator,
+    doc,
+    getFirestore,
+    setDoc,
+} from 'firebase/firestore/lite';
+
+const useEmulator = true;
 
 // See https://firebase.google.com/docs/web/learn-more#config-object
 const firebaseConfig = {
@@ -25,6 +33,11 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+if (useEmulator) {
+    connectAuthEmulator(auth, 'http://localhost:9099');
+    connectFirestoreEmulator(db, 'localhost', 8080);
+}
 
 // Wrapper functions
 export async function login({ email, password, remember }) {
