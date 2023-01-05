@@ -26,7 +26,7 @@ import Sidebar from './sidebar/Sidebar';
 export let cachedLoaderData = { posts: [] };
 
 async function loadHome() {
-    const col = collection(db, 'sample');
+    const col = collection(db, 'posts');
     const q = query(col, limit(100));
     const res = await getDocs(q);
     const posts = res.docs.map(doc => doc.data());
@@ -42,7 +42,7 @@ async function loadSaved() {
 }
 
 async function loadExplore({ params }) {
-    const col = collection(db, 'sample');
+    const col = collection(db, 'posts');
     let q;
     if (params.subtype) {
         q = query(col, where('subtype', 'array-contains', params.subtype));

@@ -96,7 +96,7 @@ function Slider({ type }) {
                                                 component: 'div',
                                             }}
                                             primary={p.title}
-                                            secondary={p.nearest_location}
+                                            secondary={p.nearestLocation}
                                         />
                                     </ListItemButton>
                                 ))}

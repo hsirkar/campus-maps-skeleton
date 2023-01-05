@@ -42,7 +42,7 @@ export async function loader({ params }) {
 
     if (cachedPost) return { post: cachedPost };
 
-    const res = await getDoc(doc(db, 'sample', params.id));
+    const res = await getDoc(doc(db, 'posts', params.id));
     const post = res.data();
     return { post };
 }
@@ -59,7 +59,7 @@ function PostDetail() {
             elevation={1}
             sx={{
                 position: 'absolute',
-                width: 350,
+                width: 475,
                 height: height,
                 zIndex: 10,
                 borderRadius: 5,
@@ -115,9 +115,7 @@ function PostDetail() {
                     <Divider />
 
                     <List mt={1.5}>
-                        <ListItem
-                            sx={{ px: 1.25, py: 0.25 }}
-                            alignItems="flex-start">
+                        <ListItem sx={{ px: 1.25, py: 0.25 }}>
                             <ListItemIcon sx={{ minWidth: 0, pr: 1.5 }}>
                                 <InfoOutlined
                                     color="primary"
@@ -131,7 +129,7 @@ function PostDetail() {
                             <ListItemIcon sx={{ minWidth: 0, pr: 1.5 }}>
                                 <Place color="primary" fontSize="medium" />
                             </ListItemIcon>
-                            <ListItemText primary={post.nearest_location} />
+                            <ListItemText primary={post.nearestLocation} />
                         </ListItem>
 
                         <ListItem sx={{ px: 1.25, py: 0.2 }}>
@@ -171,7 +169,7 @@ function PostDetail() {
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText
-                                    primary={comment}
+                                    primary={comment.content}
                                     secondary="Anonymous User"
                                 />
                             </ListItem>

@@ -32,7 +32,7 @@ export default function Popup({ p }) {
                             {p.subtype.map((s, i) => (
                                 <TypeChip type={p.type} subtype={s} key={i} />
                             ))}
-                            <Typography>{p.nearest_location}</Typography>
+                            <Typography>{p.nearestLocation}</Typography>
                         </React.Fragment>
                     }
                 />
