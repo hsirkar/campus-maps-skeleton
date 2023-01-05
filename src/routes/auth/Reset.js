@@ -1,21 +1,19 @@
 import React from 'react';
 
-import { Button, Grid, Link, TextField, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Button, Grid, Link, Typography } from '@mui/material';
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { Link as ReactRouterLink } from 'react-router-dom';
 
 export default function Reset() {
-    const handleSubmit = event => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+    const [email, setEmail] = React.useState('');
 
     return (
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 4 }}>
+        <ValidatorForm
+            onSubmit={e => {
+                e.preventDefault();
+                console.log({ email });
+            }}
+            style={{ marginTop: 4 * 8, width: '100%' }}>
             <Typography variant="h4" mb={1}>
                 Forgot password
             </Typography>
@@ -23,15 +21,21 @@ export default function Reset() {
                 Enter your email below. If the email is valid, we'll send you a
                 link to reset your password.
             </Typography>
-            <TextField
+            <TextValidator
                 margin="normal"
-                required
                 fullWidth
                 id="email"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                validators={['required', 'isEmail']}
+                errorMessages={[
+                    'This field is required',
+                    'Please enter a proper email address',
+                ]}
             />
             <Button
                 type="submit"
@@ -50,6 +54,6 @@ export default function Reset() {
                     </Link>
                 </Grid>
             </Grid>
-        </Box>
+        </ValidatorForm>
     );
 }

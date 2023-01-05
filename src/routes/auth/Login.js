@@ -6,49 +6,63 @@ import {
     FormControlLabel,
     Grid,
     Link,
-    TextField,
     Typography,
 } from '@mui/material';
-import { Box } from '@mui/system';
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { Link as ReactRouterLink } from 'react-router-dom';
 
 export default function Login() {
-    const handleSubmit = event => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+    const [username, setUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [remember, setRemember] = React.useState(true);
 
     return (
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 4 }}>
+        <ValidatorForm
+            onSubmit={e => {
+                e.preventDefault();
+                console.log({ username, password, remember });
+            }}
+            style={{ marginTop: 4 * 8, width: '100%' }}>
             <Typography variant="h4" mb={0.5}>
                 Sign in
             </Typography>
-            <TextField
+            <TextValidator
                 margin="normal"
-                required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
+                name="username"
+                onChange={e => setUsername(e.target.value)}
+                autoComplete="username"
                 autoFocus
+                validators={['required']}
+                errorMessages={['This field is required']}
+                value={username}
             />
-            <TextField
+            <TextValidator
                 margin="normal"
-                required
                 fullWidth
                 name="password"
+                onChange={e => setPassword(e.target.value)}
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                validators={['required']}
+                errorMessages={['This field is required']}
+                value={password}
             />
             <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
+                control={
+                    <Checkbox
+                        checked={remember}
+                        onChange={e => {
+                            e.preventDefault();
+                            setRemember(e.target.checked);
+                        }}
+                        color="primary"
+                    />
+                }
                 label="Remember me"
             />
             <Button
@@ -76,6 +90,6 @@ export default function Login() {
                     </Link>
                 </Grid>
             </Grid>
-        </Box>
+        </ValidatorForm>
     );
 }
