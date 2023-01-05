@@ -9,7 +9,6 @@ import {
     Link,
     Typography,
 } from '@mui/material';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import {
     Link as ReactRouterLink,
@@ -17,7 +16,7 @@ import {
     useSearchParams,
 } from 'react-router-dom';
 
-import { auth } from '../../firebase';
+import { login } from '../../firebase';
 
 export default function Login() {
     const [email, setEmail] = React.useState('');
@@ -30,8 +29,9 @@ export default function Login() {
 
     const handleSubmit = e => {
         e.preventDefault();
-        signInWithEmailAndPassword(auth, email, password)
-            .then(() => navigate('/home'))
+
+        login({ email, password, remember })
+            .then(() => navigate(searchParams.get('redirect') || '/home'))
             .catch(err => {
                 switch (err.code) {
                     case 'auth/user-not-found':

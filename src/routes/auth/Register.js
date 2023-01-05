@@ -10,8 +10,6 @@ import {
     MenuItem,
     Typography,
 } from '@mui/material';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore/lite';
 import {
     SelectValidator,
     TextValidator,
@@ -19,12 +17,12 @@ import {
 } from 'react-material-ui-form-validator';
 import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
 
-import { auth, db } from '../../firebase';
+import { register } from '../../firebase';
 
 export default function Register() {
     const [username, setUsername] = React.useState('');
     const [isStudent, setIsStudent] = React.useState(false);
-    const [school, setSchool] = React.useState('');
+    const [campus, setCampus] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [error, setError] = React.useState();
@@ -45,22 +43,21 @@ export default function Register() {
 
     const handleSubmit = e => {
         e.preventDefault();
-        createUserWithEmailAndPassword(auth, email, password)
-            .then(res =>
-                addDoc(collection(db, 'users'), {
-                    id: res.user.uid,
-                    username: username,
-                    profilePic: '',
-                    followers: [],
-                    following: [],
-                    saved: [],
-                    campus: school,
-                    verified: false,
-                })
-            )
+
+        register({ email, password, username, isStudent, campus })
             .then(() => navigate('/login?register_success=1'))
             .catch(err => {
-                setError(err?.message || 'Unknown error.');
+                switch (err.code) {
+                    case 'auth/email-already-in-use':
+                        setError(
+                            'An account with that email address already exists, please try a different email.'
+                        );
+                        break;
+                    default:
+                        setError(err?.message || 'Unknown error.');
+                        break;
+                }
+
                 console.error(err);
             });
     };
@@ -92,11 +89,11 @@ export default function Register() {
                 validators={['required']}
                 errorMessages={['This field is required']}
                 id="institution"
-                value={school}
+                value={campus}
                 label="Select institution"
                 onChange={e => {
                     e.preventDefault();
-                    setSchool(e.target.value);
+                    setCampus(e.target.value);
                 }}>
                 <MenuItem value="umd">
                     University of Maryland, College Park
@@ -106,7 +103,7 @@ export default function Register() {
                 </MenuItem>
             </SelectValidator>
 
-            {school && (
+            {campus && (
                 <FormControlLabel
                     sx={{ mt: 1 }}
                     control={

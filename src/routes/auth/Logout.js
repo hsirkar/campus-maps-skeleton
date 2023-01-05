@@ -1,22 +1,22 @@
 import React from 'react';
 
 import { Box, Typography } from '@mui/material';
-import { signOut } from 'firebase/auth';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { auth } from '../../firebase';
+import { signout } from '../../firebase';
 
 export default function Logout() {
-    React.useEffect(() => {
-        signOut(auth);
-    }, []);
-
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+
+    React.useEffect(() => {
+        signout();
+        navigate(searchParams.get('redirect') || '/home');
+    });
 
     return (
         <Box>
             <Typography>Signing out...</Typography>
-            <Navigate to={searchParams.get('redirect') || '/login'} />
         </Box>
     );
 }
