@@ -10,8 +10,7 @@ function CollapseButton({ open, setOpen }) {
             <Card
                 sx={{
                     position: 'absolute',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
+                    top: 8,
                     height: 48,
                     right: -23,
                     width: 23,
@@ -23,7 +22,7 @@ function CollapseButton({ open, setOpen }) {
                     alignItems: 'center',
                     color: 'text.secondary',
                     cursor: 'pointer',
-                    zIndex: theme => theme.zIndex.sidebar + 1,
+                    zIndex: theme => theme.zIndex.sidebar - 1,
                 }}
                 onClick={() => setOpen(!open)}>
                 {open ? <ChevronLeft /> : <ChevronRight />}
@@ -36,7 +35,7 @@ const MemoizedCollapseButton = React.memo(CollapseButton);
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen, children }) {
     return (
-        <Box position="relative" zIndex={8}>
+        <Box position="relative">
             <Collapse
                 orientation="horizontal"
                 in={sidebarOpen}

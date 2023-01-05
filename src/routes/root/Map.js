@@ -15,21 +15,29 @@ import Pin from '../../common/Pin.js';
 const MAPBOX_TOKEN =
     'pk.eyJ1IjoicmFrcmlzaCIsImEiOiJjamptczYxOGMzc3dzM3BvbDB0andscXdwIn0.GY-HcAV_MakM6gwzSS17Fg';
 
-export default function Map({ hovered, setHovered, sidebarOpen, showSidebar }) {
+function getBounds(posts) {
+    const lats = posts.map(p => p.loc._lat);
+    const longs = posts.map(p => p.loc._long);
+    const bounds = [
+        [Math.min(...longs), Math.min(...lats)],
+        [Math.max(...longs), Math.max(...lats)],
+    ];
+    return bounds;
+}
+
+export default function Map({ hovered, setHovered, sidebarOpen }) {
     const ref = React.useRef();
     const params = useParams();
     const navigate = useNavigate();
 
     // Save context
     // TODO: move this to root or context
-    const [context, setContext] = React.useState();
     const { pathname } = useLocation();
+    const context = React.useMemo(() => {
+        if (!pathname.includes('/p')) return pathname;
+    }, [pathname]);
 
     React.useEffect(() => {
-        if (!pathname.includes('/p/')) setContext(pathname);
-
-        if (ref.current) ref.current.resize();
-
         setHovered(null);
     }, [pathname, setHovered, sidebarOpen]);
 
@@ -69,18 +77,37 @@ export default function Map({ hovered, setHovered, sidebarOpen, showSidebar }) {
 
     // TODO: generate pin if no root data
 
-    const routeLoaderData = useRouteLoaderData('p');
-    React.useEffect(() => {
-        if (!params.id || !routeLoaderData || !routeLoaderData.post) return;
+    const rootLoaderData = useRouteLoaderData('root');
+    const postLoaderData = useRouteLoaderData('p');
 
-        ref?.current?.easeTo({
-            center: {
-                lon: routeLoaderData.post.loc._long,
-                lat: routeLoaderData.post.loc._lat,
-            },
-            offset: [-350 / 2, 0],
-        });
-    }, [params.id, routeLoaderData]);
+    React.useEffect(() => {
+        // If post detail view then center the map
+        if (params.id && postLoaderData?.post) {
+            ref?.current?.easeTo({
+                center: {
+                    lon: postLoaderData.post.loc._long,
+                    lat: postLoaderData.post.loc._lat,
+                },
+                offset: [-350 / 2, 0],
+            });
+        }
+
+        // Else fit map to extent
+        for (const url of [
+            '/home',
+            '/following',
+            '/search',
+            '/explore',
+            '/saved',
+        ]) {
+            if (pathname.includes(url) && rootLoaderData?.posts.length) {
+                // console.log(getBounds(rootLoaderData.posts));
+                ref?.current?.fitBounds(getBounds(rootLoaderData.posts), {
+                    padding: 75,
+                });
+            }
+        }
+    }, [pathname, params.id, postLoaderData, rootLoaderData]);
 
     return (
         <ReactMapGL
@@ -97,7 +124,7 @@ export default function Map({ hovered, setHovered, sidebarOpen, showSidebar }) {
                 width: '100vw',
                 height: 'calc(100vh - 49px)',
                 transition: 'left 0.2s',
-                left: showSidebar && sidebarOpen ? 200 : 0,
+                left: sidebarOpen ? 200 : 0,
             }}
             mapStyle="mapbox://styles/mapbox/streets-v11"
             mapboxAccessToken={MAPBOX_TOKEN}

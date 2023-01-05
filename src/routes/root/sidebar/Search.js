@@ -93,21 +93,19 @@ export default function Search({ hovered, setHovered }) {
     const { id, type, subtype } = useParams();
 
     // Save context
-    const [context, setContext] = React.useState();
-    const [title, setTitle] = React.useState();
-
     const { pathname } = useLocation();
+    const context = React.useMemo(() => {
+        if (!pathname.includes('/p/')) return pathname;
+    }, [pathname]);
 
-    React.useEffect(() => {
+    // Set title
+    const title = React.useMemo(() => {
         if (!pathname.includes('/p/')) {
-            setContext(pathname);
-
             let temp = type === 'events' ? 'Events' : 'Places';
             if (subtype) {
                 temp = types[type].find(e => e.url === subtype).name;
             }
-
-            setTitle(temp);
+            return temp;
         }
     }, [pathname, subtype, type]);
 

@@ -8,12 +8,7 @@ import {
     query,
     where,
 } from 'firebase/firestore/lite';
-import {
-    Outlet,
-    useLoaderData,
-    useLocation,
-    useParams,
-} from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 import { db } from '../../firebase';
 import AppBar from './AppBar';
@@ -72,23 +67,28 @@ export async function loader({ request, params }) {
 }
 
 export default function Root() {
-    const params = useParams();
     const { pathname, state } = useLocation();
-    const { posts } = useLoaderData();
 
     const [hovered, setHovered] = React.useState();
-    const [sidebarOpen, setSidebarOpen] = React.useState(true);
 
-    let showSidebar = true;
-    if (params.id) {
-        showSidebar =
-            (state?.context?.includes('explore') ||
-                state?.context?.includes('search')) &&
-            posts.length;
-    }
+    // Determine if sidebar is expanded
+    const [sidebarOpen, setSidebarOpen] = React.useState(
+        !!state?.context || pathname.includes('/home')
+    );
 
+    // Auto close sidebar if we came from home
+    React.useEffect(() => {
+        if (state?.context.includes('/home')) setSidebarOpen(false);
+    }, [state]);
+
+    // Auto open sidebar if we're at home
+    React.useEffect(() => {
+        if (pathname.includes('/home')) setSidebarOpen(true);
+    }, [pathname]);
+
+    // Determine what to render in sidebar
     let sidebarContent = <React.Fragment />;
-    if (pathname.includes('/home'))
+    if (pathname.includes('/home') || state?.context?.includes('/home'))
         sidebarContent = <Home setSidebarOpen={setSidebarOpen} />;
     else
         sidebarContent = (
@@ -109,20 +109,17 @@ export default function Root() {
                     height: 'calc(100vh - 49px)',
                 }}>
                 <NavRail />
-                {showSidebar && (
-                    <Sidebar
-                        hovered={hovered}
-                        setHovered={setHovered}
-                        sidebarOpen={sidebarOpen}
-                        setSidebarOpen={setSidebarOpen}>
-                        {sidebarContent}
-                    </Sidebar>
-                )}
+                <Sidebar
+                    hovered={hovered}
+                    setHovered={setHovered}
+                    sidebarOpen={sidebarOpen}
+                    setSidebarOpen={setSidebarOpen}>
+                    {sidebarContent}
+                </Sidebar>
                 <Map
                     hovered={hovered}
                     setHovered={setHovered}
                     sidebarOpen={sidebarOpen}
-                    showSidebar={showSidebar}
                 />
                 <Outlet />
             </Box>
