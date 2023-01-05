@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, darken } from '@mui/material';
+import { Box, darken, useTheme } from '@mui/material';
 import { blue, green, grey } from '@mui/material/colors';
 
 import types from '../postTypes';
@@ -17,22 +17,33 @@ function Pin({
 }) {
     const icon = subtypes.find(item => item.url === post.subtype[0]).icon;
 
+    const theme = useTheme();
+    const palette = post.type === 'places' ? blue : green;
+
     let background;
     let border;
 
-    if (selected) {
-        background = grey[800];
-        border = darken(grey[900], 0.1);
-    } else if (highlighted) {
-        background = grey[600];
-        border = darken(grey[900], 0.1);
-    } else {
-        if (post.type === 'places') {
-            background = blue[500];
-            border = darken(blue[900], 0.1);
+    if (theme.palette.mode === 'light') {
+        if (selected) {
+            background = grey[800];
+            border = darken(grey[900], 0.1);
+        } else if (highlighted) {
+            background = grey[600];
+            border = darken(grey[900], 0.1);
         } else {
-            background = green[500];
-            border = darken(green[900], 0.1);
+            background = palette[500];
+            border = darken(palette[900], 0.1);
+        }
+    } else {
+        if (selected) {
+            background = grey[700];
+            border = darken(grey[900], 0.1);
+        } else if (highlighted) {
+            background = grey[500];
+            border = darken(grey[900], 0.1);
+        } else {
+            background = palette[900];
+            border = darken(palette[900], 0.6);
         }
     }
 
@@ -62,6 +73,7 @@ function Pin({
                     highlighted
                         ? theme.zIndex.highlightedPin
                         : theme.zIndex.pin,
+                transform: selected ? 'scale(1.2)' : 'none',
             }}
             {...rest}>
             <Box
@@ -73,7 +85,7 @@ function Pin({
                     transform: 'rotate(-45deg)',
                     boxShadow: 1,
                     color: 'white',
-                    borderWidth: 1,
+                    borderWidth: 0.1,
                     borderStyle: 'solid',
                     borderColor: border,
                 }}

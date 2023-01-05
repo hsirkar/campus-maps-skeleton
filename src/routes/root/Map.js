@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { useTheme } from '@mui/material';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapGL, { Marker } from 'react-map-gl';
 import {
@@ -101,6 +102,8 @@ export default function Map() {
         }
     }, [pathname, params.id, postLoaderData, rootLoaderData]);
 
+    const theme = useTheme();
+
     return (
         <ReactMapGL
             initialViewState={{
@@ -118,7 +121,7 @@ export default function Map() {
                 transition: 'left 0.2s',
                 left: context ? (sidebarExpanded ? 200 : 0) : 0,
             }}
-            mapStyle="mapbox://styles/mapbox/streets-v11"
+            mapStyle={`mapbox://styles/mapbox/${theme.palette.mode}-v10`}
             mapboxAccessToken={MAPBOX_TOKEN}
             ref={ref}>
             {pins}

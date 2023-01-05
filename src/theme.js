@@ -6,11 +6,9 @@ const defaultTheme = createTheme();
 // https://github.com/sindresorhus/github-markdown-css/blob/main/github-markdown-light.css
 const theme = createTheme({
     palette: {
+        // mode: 'dark',
         primary: {
             main: '#008080',
-        },
-        text: {
-            secondary: '#4A5568',
         },
         grey: {
             50: '#F7FAFC',

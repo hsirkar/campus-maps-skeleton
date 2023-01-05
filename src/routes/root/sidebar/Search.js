@@ -116,7 +116,7 @@ export default function Search() {
                     // hover states
                     '& .MuiListItemButton-root:hover, .MuiListItemButton-root-hovered':
                         {
-                            bgcolor: '#ebf8ff',
+                            bgcolor: 'action.hover',
                         },
                 }}>
                 {posts.map((p, i) => (

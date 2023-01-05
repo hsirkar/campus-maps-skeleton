@@ -116,7 +116,7 @@ function Slider({ type }) {
                         className="slider-arrow"
                         sx={{
                             position: 'absolute',
-                            bgcolor: 'white',
+                            bgcolor: 'background.paper',
                             borderRadius: '50%',
                             boxShadow: 1,
                             top: '50%',
@@ -138,7 +138,7 @@ function Slider({ type }) {
                         className="slider-arrow"
                         sx={{
                             position: 'absolute',
-                            bgcolor: 'white',
+                            bgcolor: 'background.paper',
                             borderRadius: '50%',
                             boxShadow: 1,
                             top: '50%',
