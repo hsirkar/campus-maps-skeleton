@@ -1,10 +1,11 @@
 import * as React from 'react';
 
-import { Close, Search } from '@mui/icons-material';
+import { AccountCircleOutlined, Close, Search } from '@mui/icons-material';
 import {
     AppBar,
     Avatar,
     Box,
+    Button,
     Divider,
     Fade,
     IconButton,
@@ -16,7 +17,13 @@ import {
     Toolbar,
     Typography,
 } from '@mui/material';
-import { useNavigation } from 'react-router';
+import {
+    Link as ReactRouterLink,
+    useLocation,
+    useNavigation,
+} from 'react-router-dom';
+
+import { useRoot } from './Root';
 
 export function CustomizedInputBase() {
     return (
@@ -52,6 +59,8 @@ export function CustomizedInputBase() {
 function MenuAppBar({ open, setOpen }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigation = useNavigation();
+    const { pathname } = useLocation();
+    const { userInfo } = useRoot();
 
     const handleMenu = event => {
         setAnchorEl(event.currentTarget);
@@ -68,6 +77,7 @@ function MenuAppBar({ open, setOpen }) {
                 px: 1,
                 zIndex: theme => theme.zIndex.drawer + 1,
                 bgcolor: 'background.paper',
+                color: 'text.secondary',
             }}
             elevation={1}>
             <Fade
@@ -111,15 +121,27 @@ function MenuAppBar({ open, setOpen }) {
                     display="flex"
                     justifyContent="flex-end"
                     alignItems="flex-end">
-                    <IconButton
-                        size="medium"
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        onClick={handleMenu}
-                        color="inherit">
-                        <Avatar sx={{ width: 32, height: 32 }}>RD</Avatar>
-                    </IconButton>
+                    {userInfo ? (
+                        <IconButton
+                            size="medium"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenu}
+                            color="inherit">
+                            <Avatar sx={{ width: 32, height: 32 }}>
+                                {userInfo.username.charAt(0)}
+                            </Avatar>
+                        </IconButton>
+                    ) : (
+                        <Button
+                            component={ReactRouterLink}
+                            to={'/login?redirect=' + pathname}
+                            color="primary"
+                            startIcon={<AccountCircleOutlined />}>
+                            Sign in
+                        </Button>
+                    )}
                     <Menu
                         PaperProps={{
                             elevation: 1,
@@ -142,7 +164,11 @@ function MenuAppBar({ open, setOpen }) {
                             Help & Support
                         </MenuItem>
                         <Divider />
-                        <MenuItem onClick={handleClose}>Sign out</MenuItem>
+                        <MenuItem
+                            component={ReactRouterLink}
+                            to={'/logout?redirect=' + pathname}>
+                            Sign out
+                        </MenuItem>
                     </Menu>
                 </Box>
             </Toolbar>

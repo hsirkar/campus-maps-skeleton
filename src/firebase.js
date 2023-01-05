@@ -8,12 +8,7 @@ import {
     signInWithEmailAndPassword,
     signOut,
 } from 'firebase/auth';
-import {
-    doc,
-    getFirestore,
-    setDoc,
-} from 'firebase/firestore/lite';
-
+import { doc, getFirestore, setDoc } from 'firebase/firestore/lite';
 
 // See https://firebase.google.com/docs/web/learn-more#config-object
 const firebaseConfig = {
@@ -65,5 +60,5 @@ export async function register({
 }
 
 export async function signout() {
-    return signOut();
+    return signOut(auth);
 }

@@ -16,7 +16,7 @@ import {
     useSearchParams,
 } from 'react-router-dom';
 
-import { login } from '../../firebase';
+import { auth, login } from '../../firebase';
 
 export default function Login() {
     const [email, setEmail] = React.useState('');
@@ -26,6 +26,12 @@ export default function Login() {
 
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+
+    React.useEffect(() => {
+        if (auth.currentUser) {
+            navigate(searchParams.get('redirect') || '/home');
+        }
+    }, [navigate, searchParams]);
 
     const handleSubmit = e => {
         e.preventDefault();

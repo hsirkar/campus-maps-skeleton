@@ -96,13 +96,13 @@ function PostDetail() {
                             sx={{ width: 90, color: 'text.secondary' }}
                             variant="text"
                             startIcon={<FavoriteBorderOutlined />}>
-                            100
+                            {post.likes.length}
                         </Button>
                         <Button
                             sx={{ width: 90, color: 'text.secondary' }}
                             variant="text"
                             startIcon={<CommentOutlined />}>
-                            55
+                            {post.comments.length}
                         </Button>
                         <Button
                             sx={{ width: 90, color: 'text.secondary' }}

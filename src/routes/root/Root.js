@@ -3,6 +3,8 @@ import React from 'react';
 import { Box } from '@mui/material';
 import {
     collection,
+    doc,
+    getDoc,
     getDocs,
     limit,
     query,
@@ -10,7 +12,7 @@ import {
 } from 'firebase/firestore/lite';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import { db } from '../../firebase';
+import { auth, db } from '../../firebase';
 import AppBar from './AppBar';
 import Map from './Map';
 import NavRail from './NavRail';
@@ -72,6 +74,7 @@ export const useRoot = () => React.useContext(RootContext);
 export default function Root() {
     const { pathname } = useLocation();
 
+    const [userInfo, setUserInfo] = React.useState();
     const [context, setContext] = React.useState();
     const [hovered, setHovered] = React.useState();
     const [sidebarExpanded, setSidebarExpanded] = React.useState(true);
@@ -88,6 +91,15 @@ export default function Root() {
             setSidebarExpanded(false);
         if (pathname.includes('/explore')) setSidebarExpanded(true);
     }, [pathname, context]);
+
+    // Contains entry of current user in users collection
+    React.useEffect(() => {
+        if (auth.currentUser?.uid) {
+            getDoc(doc(db, 'users', auth.currentUser?.uid))
+                .then(res => res.data())
+                .then(res => setUserInfo(res));
+        }
+    });
 
     // Determine what to render in side bar
     const sidebarContent = React.useMemo(() => {
@@ -106,6 +118,8 @@ export default function Root() {
                 setHovered,
                 sidebarExpanded,
                 setSidebarExpanded,
+                userInfo,
+                setUserInfo,
             }}>
             <AppBar />
             <Box
