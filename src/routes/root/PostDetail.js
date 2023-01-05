@@ -59,7 +59,7 @@ function PostDetail() {
             elevation={1}
             sx={{
                 position: 'absolute',
-                width: 475,
+                width: 430,
                 height: height,
                 zIndex: 10,
                 borderRadius: 5,
