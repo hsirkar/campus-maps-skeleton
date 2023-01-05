@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+    Alert,
     Button,
     Checkbox,
     FormControlLabel,
@@ -9,12 +10,16 @@ import {
     MenuItem,
     Typography,
 } from '@mui/material';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore/lite';
 import {
     SelectValidator,
     TextValidator,
     ValidatorForm,
 } from 'react-material-ui-form-validator';
-import { Link as ReactRouterLink } from 'react-router-dom';
+import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
+
+import { auth, db } from '../../firebase';
 
 export default function Register() {
     const [username, setUsername] = React.useState('');
@@ -22,6 +27,7 @@ export default function Register() {
     const [school, setSchool] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [error, setError] = React.useState();
 
     React.useEffect(() => {
         ValidatorForm.addValidationRule(
@@ -35,16 +41,38 @@ export default function Register() {
         };
     }, []);
 
+    const navigate = useNavigate();
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(res =>
+                addDoc(collection(db, 'users'), {
+                    id: res.user.uid,
+                    username: username,
+                    profilePic: '',
+                    followers: [],
+                    following: [],
+                    saved: [],
+                    campus: school,
+                    verified: false,
+                })
+            )
+            .then(() => navigate('/login?register_success=1'))
+            .catch(err => {
+                setError(err?.message || 'Unknown error.');
+                console.error(err);
+            });
+    };
+
     return (
         <ValidatorForm
-            onSubmit={e => {
-                e.preventDefault();
-                console.log({ username, isStudent, school, email, password });
-            }}
+            onSubmit={handleSubmit}
             style={{ marginTop: 4 * 8, width: '100%' }}>
             <Typography variant="h4" mb={0.5}>
                 Sign up
             </Typography>
+            {error && <Alert severity="error">{error}</Alert>}
             <TextValidator
                 autoComplete="username"
                 errorMessages={['This field is required']}
@@ -127,6 +155,7 @@ export default function Register() {
                 autoComplete="password"
                 errorMessages={['This field is required']}
                 fullWidth
+                type="password"
                 id="password"
                 label="Password"
                 margin="normal"

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+    Alert,
     Button,
     Checkbox,
     FormControlLabel,
@@ -8,36 +9,79 @@ import {
     Link,
     Typography,
 } from '@mui/material';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
-import { Link as ReactRouterLink } from 'react-router-dom';
+import {
+    Link as ReactRouterLink,
+    useNavigate,
+    useSearchParams,
+} from 'react-router-dom';
+
+import { auth } from '../../firebase';
 
 export default function Login() {
-    const [username, setUsername] = React.useState('');
+    const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [remember, setRemember] = React.useState(true);
+    const [error, setError] = React.useState();
+
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        signInWithEmailAndPassword(auth, email, password)
+            .then(() => navigate('/home'))
+            .catch(err => {
+                switch (err.code) {
+                    case 'auth/user-not-found':
+                        setError(
+                            "That account doesn't exist, try a different email or create a new account."
+                        );
+                        break;
+                    case 'auth/wrong-password':
+                        setError(
+                            'The username/password combination is invalid, please try again.'
+                        );
+                        break;
+                    default:
+                        setError(err?.message || 'Unknown error.');
+                        break;
+                }
+                setPassword('');
+                console.error(err);
+            });
+    };
 
     return (
         <ValidatorForm
-            onSubmit={e => {
-                e.preventDefault();
-                console.log({ username, password, remember });
-            }}
+            onSubmit={handleSubmit}
             style={{ marginTop: 4 * 8, width: '100%' }}>
             <Typography variant="h4" mb={0.5}>
                 Sign in
             </Typography>
+            {!error && searchParams.get('register_success') && (
+                <Alert severity="info">
+                    Your registration was successful, please sign in below with
+                    your new account.
+                </Alert>
+            )}
+            {error && <Alert severity="error">{error}</Alert>}
             <TextValidator
                 margin="normal"
                 fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                onChange={e => setUsername(e.target.value)}
-                autoComplete="username"
+                id="email"
+                label="Email"
+                name="email"
+                onChange={e => setEmail(e.target.value)}
+                autoComplete="email"
                 autoFocus
-                validators={['required']}
-                errorMessages={['This field is required']}
-                value={username}
+                validators={['required', 'isEmail']}
+                errorMessages={[
+                    'This field is required',
+                    'Please enter a proper email address',
+                ]}
+                value={email}
             />
             <TextValidator
                 margin="normal"

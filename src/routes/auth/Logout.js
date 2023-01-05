@@ -1,13 +1,14 @@
 import React from 'react';
 
 import { Box, Typography } from '@mui/material';
+import { signOut } from 'firebase/auth';
 import { Navigate, useSearchParams } from 'react-router-dom';
 
-import { logout } from '../../firebase';
+import { auth } from '../../firebase';
 
 export default function Logout() {
     React.useEffect(() => {
-        logout();
+        signOut(auth);
     }, []);
 
     const [searchParams] = useSearchParams();
