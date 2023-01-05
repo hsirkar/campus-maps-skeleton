@@ -4,9 +4,13 @@ import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Card, Collapse, Paper, Tooltip } from '@mui/material';
 import { Box } from '@mui/system';
 
-function CollapseButton({ open, setOpen }) {
+import { useRoot } from '../Root';
+
+function CollapseButton() {
+    const { sidebarExpanded, setSidebarExpanded } = useRoot();
     return (
-        <Tooltip title={(open ? 'Collapse' : 'Expand') + ' side panel'}>
+        <Tooltip
+            title={(sidebarExpanded ? 'Collapse' : 'Expand') + ' side panel'}>
             <Card
                 sx={{
                     position: 'absolute',
@@ -24,8 +28,8 @@ function CollapseButton({ open, setOpen }) {
                     cursor: 'pointer',
                     zIndex: theme => theme.zIndex.sidebar - 1,
                 }}
-                onClick={() => setOpen(!open)}>
-                {open ? <ChevronLeft /> : <ChevronRight />}
+                onClick={() => setSidebarExpanded(!sidebarExpanded)}>
+                {sidebarExpanded ? <ChevronLeft /> : <ChevronRight />}
             </Card>
         </Tooltip>
     );
@@ -33,12 +37,13 @@ function CollapseButton({ open, setOpen }) {
 
 const MemoizedCollapseButton = React.memo(CollapseButton);
 
-export default function Sidebar({ sidebarOpen, setSidebarOpen, children }) {
+export default function Sidebar({ children }) {
+    const { sidebarExpanded } = useRoot();
     return (
         <Box position="relative">
             <Collapse
                 orientation="horizontal"
-                in={sidebarOpen}
+                in={sidebarExpanded}
                 unmountOnExit
                 mountOnEnter>
                 <Paper
@@ -52,10 +57,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, children }) {
                     <React.Fragment>{children}</React.Fragment>
                 </Paper>
             </Collapse>
-            <MemoizedCollapseButton
-                open={sidebarOpen}
-                setOpen={setSidebarOpen}
-            />
+            <MemoizedCollapseButton />
         </Box>
     );
 }

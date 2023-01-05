@@ -20,6 +20,8 @@ import Scrollbars from 'react-custom-scrollbars';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 
+import { useRoot } from './Root';
+
 dayjs.extend(calendar);
 dayjs.extend(relativeTime);
 
@@ -88,10 +90,11 @@ function ListItem({ item, selected }) {
 const MemoizedListItem = React.memo(ListItem);
 
 export default function NavRail() {
-    const { pathname, state } = useLocation();
+    const { pathname } = useLocation();
+    const { context } = useRoot();
 
     function isSelected(item) {
-        return pathname === item.to || state?.context === item.to;
+        return pathname === item.to || context === item.to;
     }
 
     return (

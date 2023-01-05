@@ -19,11 +19,7 @@ import {
 import 'keen-slider/keen-slider.min.css';
 import { useKeenSlider } from 'keen-slider/react';
 import Scrollbars from 'react-custom-scrollbars';
-import {
-    Link as ReactRouterLink,
-    useLocation,
-    useRouteLoaderData,
-} from 'react-router-dom';
+import { Link as ReactRouterLink, useRouteLoaderData } from 'react-router-dom';
 
 import Chip from '../../../common/Chip';
 import PostAvatar from '../../../common/PostAvatar';
@@ -38,7 +34,7 @@ const eventsPreview = [
 ];
 const placesPreview = ['hangout', 'cool', 'restaurants', 'shops', 'study'];
 
-function Slider({ type, linkState }) {
+function Slider({ type }) {
     const [currentSlide, setCurrentSlide] = React.useState(0);
     const [sliderRef, instanceRef] = useKeenSlider({
         slides: {
@@ -82,7 +78,6 @@ function Slider({ type, linkState }) {
                                     <ListItemButton
                                         component={ReactRouterLink}
                                         to={`/p/${p.id}`}
-                                        state={linkState}
                                         key={i}
                                         dense>
                                         <ListItemAvatar>
@@ -173,12 +168,6 @@ function Slider({ type, linkState }) {
 }
 
 export default function Home() {
-    // Save context
-    const { pathname } = useLocation();
-    const context = React.useMemo(() => {
-        if (!pathname.includes('/p/')) return pathname;
-    }, [pathname]);
-
     return (
         <Scrollbars
             style={{ width: 535, height: 'calc(100vh - 49px)' }}
@@ -211,7 +200,7 @@ export default function Home() {
                         </Link>
                     </Grid>
                     <Grid item xs={12}>
-                        <Slider type="events" linkState={{ context }} />
+                        <Slider type="events" />
                     </Grid>
                     <Grid item xs={12}>
                         <Divider />
@@ -229,7 +218,7 @@ export default function Home() {
                         </Link>
                     </Grid>
                     <Grid item xs={12}>
-                        <Slider type="places" linkState={{ context }} />
+                        <Slider type="places" />
                     </Grid>
                     <Grid item xs={12}>
                         <Divider />

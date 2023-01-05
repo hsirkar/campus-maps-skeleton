@@ -11,6 +11,7 @@ import {
 } from 'react-router';
 
 import Pin from '../../common/Pin.js';
+import { useRoot } from '../root/Root';
 
 const MAPBOX_TOKEN =
     'pk.eyJ1IjoicmFrcmlzaCIsImEiOiJjamptczYxOGMzc3dzM3BvbDB0andscXdwIn0.GY-HcAV_MakM6gwzSS17Fg';
@@ -25,21 +26,12 @@ function getBounds(posts) {
     return bounds;
 }
 
-export default function Map({ hovered, setHovered, sidebarOpen }) {
+export default function Map() {
     const ref = React.useRef();
     const params = useParams();
     const navigate = useNavigate();
-
-    // Save context
-    // TODO: move this to root or context
     const { pathname } = useLocation();
-    const context = React.useMemo(() => {
-        if (!pathname.includes('/p')) return pathname;
-    }, [pathname]);
-
-    React.useEffect(() => {
-        setHovered(null);
-    }, [pathname, setHovered, sidebarOpen]);
+    const { hovered, setHovered, context, sidebarExpanded } = useRoot();
 
     // Generate pins based on Root's loader data
     const { posts } = useLoaderData();
@@ -59,7 +51,7 @@ export default function Map({ hovered, setHovered, sidebarOpen }) {
                     onClick={e => {
                         e.originalEvent.preventDefault();
                         e.originalEvent.stopPropagation();
-                        navigate('/p/' + post.id, { state: { context } });
+                        navigate('/p/' + post.id);
                     }}>
                     <Pin
                         post={post}
@@ -72,7 +64,7 @@ export default function Map({ hovered, setHovered, sidebarOpen }) {
                     />
                 </Marker>
             )),
-        [posts, params.id, navigate, hovered, context, setHovered]
+        [posts, params.id, navigate, hovered, setHovered]
     );
 
     // TODO: generate pin if no root data
@@ -124,7 +116,7 @@ export default function Map({ hovered, setHovered, sidebarOpen }) {
                 width: '100vw',
                 height: 'calc(100vh - 49px)',
                 transition: 'left 0.2s',
-                left: sidebarOpen ? 200 : 0,
+                left: context ? (sidebarExpanded ? 200 : 0) : 0,
             }}
             mapStyle="mapbox://styles/mapbox/streets-v11"
             mapboxAccessToken={MAPBOX_TOKEN}

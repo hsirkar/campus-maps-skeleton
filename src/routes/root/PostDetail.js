@@ -30,12 +30,12 @@ import { Stack } from '@mui/system';
 import dayjs from 'dayjs';
 import { doc, getDoc } from 'firebase/firestore/lite';
 import Scrollbars from 'react-custom-scrollbars';
-import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 import TypeChip from '../../common/Chip';
 import PostAvatar from '../../common/PostAvatar';
 import { db } from '../../firebase';
-import { cachedLoaderData } from './Root';
+import { cachedLoaderData, useRoot } from './Root';
 
 export async function loader({ params }) {
     const cachedPost = cachedLoaderData?.posts?.find(p => p.id === params.id);
@@ -51,7 +51,7 @@ const height = 'calc(100vh - 49px - 50px)';
 
 function PostDetail() {
     const navigate = useNavigate();
-    const { state } = useLocation();
+    const { context } = useRoot();
     const { post } = useLoaderData();
 
     return (
@@ -71,7 +71,7 @@ function PostDetail() {
                     avatar={<PostAvatar p={post} />}
                     action={
                         <IconButton
-                            onClick={() => navigate(state?.context || '/home')}
+                            onClick={() => navigate(context || '/home')}
                             aria-label="settings">
                             <Close />
                         </IconButton>

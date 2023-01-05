@@ -23,17 +23,12 @@ import {
 import TypeChip from '../../../common/Chip';
 import PostAvatar from '../../../common/PostAvatar';
 import types from '../../../postTypes';
+import { useRoot } from '../Root';
 
 dayjs.extend(calendar);
 dayjs.extend(relativeTime);
 
-export function PostListItem({
-    p,
-    isHovered,
-    isSelected,
-    setHovered,
-    linkState,
-}) {
+export function PostListItem({ p, isHovered, isSelected, setHovered }) {
     const content = React.useMemo(
         () => (
             <React.Fragment>
@@ -70,7 +65,6 @@ export function PostListItem({
                     alignItems="flex-start"
                     component={ReactRouterLink}
                     to={`/p/${p.id}`}
-                    state={linkState}
                     sx={{ px: 3, py: 1 }}
                     className={
                         isHovered ? 'MuiListItemButton-root-hovered' : ''
@@ -87,16 +81,12 @@ export function PostListItem({
 
 const MemoizedPostListItem = React.memo(PostListItem);
 
-export default function Search({ hovered, setHovered }) {
-    // Get data from above loader
+export default function Search() {
+    // Get data from loader
     const { posts } = useRouteLoaderData('root');
     const { id, type, subtype } = useParams();
 
-    // Save context
     const { pathname } = useLocation();
-    const context = React.useMemo(() => {
-        if (!pathname.includes('/p/')) return pathname;
-    }, [pathname]);
 
     // Set title
     const title = React.useMemo(() => {
@@ -108,6 +98,8 @@ export default function Search({ hovered, setHovered }) {
             return temp;
         }
     }, [pathname, subtype, type]);
+
+    const { hovered, setHovered } = useRoot();
 
     return (
         <Scrollbars
@@ -134,7 +126,6 @@ export default function Search({ hovered, setHovered }) {
                         isSelected={p.id === id}
                         isHovered={hovered === p.id}
                         setHovered={setHovered}
-                        linkState={{ context }}
                     />
                 ))}
             </List>

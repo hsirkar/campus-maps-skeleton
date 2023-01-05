@@ -66,41 +66,47 @@ export async function loader({ request, params }) {
     return cachedLoaderData;
 }
 
+const RootContext = React.createContext();
+export const useRoot = () => React.useContext(RootContext);
+
 export default function Root() {
-    const { pathname, state } = useLocation();
+    const { pathname } = useLocation();
 
+    const [context, setContext] = React.useState();
     const [hovered, setHovered] = React.useState();
+    const [sidebarExpanded, setSidebarExpanded] = React.useState(true);
 
-    // Determine if sidebar is expanded
-    const [sidebarOpen, setSidebarOpen] = React.useState(
-        !!state?.context || pathname.includes('/home')
-    );
-
-    // Auto close sidebar if we came from home
+    // Save context
     React.useEffect(() => {
-        if (state?.context.includes('/home')) setSidebarOpen(false);
-    }, [state]);
-
-    // Auto open sidebar if we're at home
-    React.useEffect(() => {
-        if (pathname.includes('/home')) setSidebarOpen(true);
+        if (!pathname.includes('/p')) setContext(pathname);
     }, [pathname]);
 
-    // Determine what to render in sidebar
-    let sidebarContent = <React.Fragment />;
-    if (pathname.includes('/home') || state?.context?.includes('/home'))
-        sidebarContent = <Home setSidebarOpen={setSidebarOpen} />;
-    else
-        sidebarContent = (
-            <Search
-                hovered={hovered}
-                setHovered={setHovered}
-                setSidebarOpen={setSidebarOpen}
-            />
-        );
+    // Automatically expand/collapse sidebar
+    React.useEffect(() => {
+        if (pathname.includes('/home')) setSidebarExpanded(true);
+        if (pathname.includes('/p') && context?.includes('/home'))
+            setSidebarExpanded(false);
+        if (pathname.includes('/explore')) setSidebarExpanded(true);
+    }, [pathname, context]);
+
+    // Determine what to render in side bar
+    const sidebarContent = React.useMemo(() => {
+        if (pathname.includes('/home')) return <Home />;
+        if (pathname.includes('/explore')) return <Search />;
+        if (context?.includes('/home')) return <Home />;
+        if (context?.includes('/explore')) return <Search />;
+        return <Home />;
+    }, [pathname, context]);
 
     return (
-        <React.Fragment>
+        <RootContext.Provider
+            value={{
+                context,
+                hovered,
+                setHovered,
+                sidebarExpanded,
+                setSidebarExpanded,
+            }}>
             <AppBar />
             <Box
                 sx={{
@@ -109,20 +115,10 @@ export default function Root() {
                     height: 'calc(100vh - 49px)',
                 }}>
                 <NavRail />
-                <Sidebar
-                    hovered={hovered}
-                    setHovered={setHovered}
-                    sidebarOpen={sidebarOpen}
-                    setSidebarOpen={setSidebarOpen}>
-                    {sidebarContent}
-                </Sidebar>
-                <Map
-                    hovered={hovered}
-                    setHovered={setHovered}
-                    sidebarOpen={sidebarOpen}
-                />
+                {context && <Sidebar>{sidebarContent}</Sidebar>}
+                <Map />
                 <Outlet />
             </Box>
-        </React.Fragment>
+        </RootContext.Provider>
     );
 }
