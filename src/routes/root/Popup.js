@@ -13,15 +13,25 @@ import PostAvatar from '../../common/PostAvatar';
 
 export default function Popup({ p }) {
     return (
-        <Paper sx={{ position: 'absolute', width: 350 }}>
-            <ListItem>
+        <Paper
+            sx={{
+                position: 'absolute',
+                width: 350,
+                borderRadius: 2,
+                px: 2,
+                py: 1,
+            }}>
+            <ListItem disablePadding>
                 <ListItemAvatar>
                     <PostAvatar p={p} />
                 </ListItemAvatar>
                 <ListItemText
                     primaryTypographyProps={{
                         fontWeight: 600,
-                        fontSize: '1.3em',
+                        fontSize: '1.15em',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
                     }}
                     secondaryTypographyProps={{
                         component: 'div',
